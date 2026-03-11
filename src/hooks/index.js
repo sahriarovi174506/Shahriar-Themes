@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { apiUrl } from "../config";
 
 export function useScrolled() {
   const [scrolled, setScrolled] = useState(false);
@@ -78,7 +79,7 @@ export function useDownloadsApi(templateId, initialCount, repoUrl) {
     if (!templateId) return;
 
     let active = true;
-    fetch(`/api/downloads/${templateId}`)
+    fetch(apiUrl(`/api/downloads/${templateId}`))
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (!active) return;
@@ -100,7 +101,7 @@ export function useDownloadsApi(templateId, initialCount, repoUrl) {
 
     // Post increment to backend (fire and forget)
     if (templateId) {
-      fetch(`/api/downloads/${templateId}`, { method: "POST" }).catch(() => { });
+      fetch(apiUrl(`/api/downloads/${templateId}`), { method: "POST" }).catch(() => { });
     }
 
     // Trigger GitHub zip download

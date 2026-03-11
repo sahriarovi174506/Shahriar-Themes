@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAnimateOnScroll } from "../hooks";
+import { apiUrl } from "../config";
 
 export function ContactPage() {
   useAnimateOnScroll();
@@ -10,7 +11,7 @@ export function ContactPage() {
     e.preventDefault();
     setStatus("loading");
     try {
-      const res = await fetch(`/api/contact`, {
+      const res = await fetch(apiUrl(`/api/contact`), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

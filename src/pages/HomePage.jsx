@@ -5,30 +5,15 @@ import { TemplateCard } from "../components/TemplateCard";
 import { AnimCount } from "../components/AnimCount";
 import { TEMPLATES } from "../data/templates";
 import { TESTIMONIALS } from "../data/siteData";
+import { apiUrl } from "../config";
 
 export function HomePage({ setPage, setSelected }) {
   useAnimateOnScroll();
 
-  // Newsletter state
-  const [nlEmail, setNlEmail] = useState("");
-  const [nlStatus, setNlStatus] = useState("idle"); // idle | loading | success | error
-  const submitNewsletter = async (e) => {
-    e.preventDefault();
-    setNlStatus("loading");
-    try {
-      const res = await fetch(`/api/newsletter`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: nlEmail }),
-      });
-      setNlStatus(res.ok ? "success" : "error");
-    } catch { setNlStatus("error"); }
-  };
-
   // Live site stats from backend
   const [stats, setStats] = useState({ totalTemplates: 48, totalDownloads: 7800, happyClients: 120, avgRating: 5 });
   useEffect(() => {
-    fetch(`/api/stats`)
+    fetch(apiUrl(`/api/stats`))
       .then(r => r.ok ? r.json() : null)
       .then(data => { if (data) setStats(data); })
       .catch(() => {});
@@ -186,25 +171,7 @@ export function HomePage({ setPage, setSelected }) {
               <button className="btn btn-primary btn-lg" onClick={() => { setPage("templates"); window.scrollTo({top:0}); }}>Browse Free Templates</button>
               <button className="btn btn-secondary btn-lg" onClick={() => { setPage("contact"); window.scrollTo({top:0}); }}>Get a Custom Quote</button>
             </div>
-            <div style={{ marginTop:"4rem", borderTop:"1px solid var(--border)", paddingTop:"3.6rem" }}>
-              <div className="section-eyebrow" style={{ justifyContent:"center", marginBottom:"1.2rem" }}>Newsletter</div>
-              <p style={{ color:"var(--text-2)", fontSize:"1.5rem", marginBottom:"2rem" }}>Get notified when new free templates drop — no spam, ever.</p>
-              {nlStatus === "success" ? (
-                <p style={{ color:"var(--accent)", fontWeight:"600" }}>✓ You're on the list!</p>
-              ) : (
-                <form onSubmit={submitNewsletter} style={{ display:"flex", gap:"1rem", maxWidth:"46rem", margin:"0 auto", flexWrap:"wrap", justifyContent:"center" }}>
-                  <input
-                    type="email" required placeholder="your@email.com" value={nlEmail}
-                    onChange={e => setNlEmail(e.target.value)}
-                    style={{ flex:1, minWidth:"22rem", background:"var(--bg-3)", border:"1px solid var(--border)", borderRadius:"var(--radius-sm)", padding:"1rem 1.6rem", color:"var(--text-1)", fontSize:"1.5rem" }}
-                  />
-                  <button type="submit" className="btn btn-primary" disabled={nlStatus==="loading"}>
-                    {nlStatus==="loading" ? "Subscribing..." : "Subscribe →"}
-                  </button>
-                  {nlStatus==="error" && <p style={{ width:"100%", color:"#ff5e78", fontSize:"1.3rem", marginTop:"0.8rem" }}>Something went wrong. Please try again.</p>}
-                </form>
-              )}
-            </div>
+
           </div>
         </div>
       </section>

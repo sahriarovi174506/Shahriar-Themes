@@ -1,4 +1,4 @@
-# React + Vite
+# Shahriar Themes (React + Vite)
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -6,6 +6,25 @@ Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Environment variables
+
+Copy `.env.example` to `.env` and fill in values.
+
+Frontend (Vite):
+
+- `VITE_API_URL` (optional): Base URL where the API endpoints live (e.g. `https://your-project.vercel.app`). If unset, the app uses same-origin in production and `http://localhost:3000` in development.
+
+Serverless API (Resend) — used by `api/contact.js`:
+
+- `RESEND_API_KEY`: Create in the Resend dashboard (API Keys).
+- `RESEND_FROM_EMAIL`: A verified sender address/domain in Resend.
+- `RESEND_TO_EMAIL`: Inbox address where contact-form emails should be delivered.
+
+Vercel KV — used by `api/downloads/[id].js` and `api/stats.js`:
+
+- `KV_REST_API_URL`: From your Vercel KV connection details.
+- `KV_REST_API_TOKEN`: From your Vercel KV connection details.
 
 ## React Compiler
 

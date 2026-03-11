@@ -28,9 +28,9 @@ export const TEMPLATES = [
     },
     {
         id: 4, name: "BlogFlow", category: "Blog",
-        desc: "Clean and readable blog template with category filters and newsletter.",
+        desc: "Clean and readable blog template with category filters and RSS feed.",
         tech: ["Gatsby", "GraphQL", "MDX"],
-        features: ["Category filter", "Search bar", "Author profiles", "Newsletter signup", "Reading progress", "RSS feed"],
+        features: ["Category filter", "Search bar", "Author profiles", "Reading progress", "RSS feed"],
         downloads: 634, previewUrl: "#", repoUrl: "https://github.com/YOUR_USERNAME/blogflow",
         color: "#ffc54d",
         images: ["https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80", "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=800&q=80"],
