@@ -4,7 +4,7 @@ export const TEMPLATES = [
         desc: "Modern responsive landing page template for landscaping and lawn care businesses.",
         tech: ["HTML", "CSS", "JS", "GSAP"],
         features: ["Animated hero section", "Interactive pricing toggle", "Email capture form", "Mobile responsive", "Dark mode ready", "Optimised performance"],
-        downloads: 1842, previewUrl: "https://greenscape104.netlify.app/", repoUrl: "https://github.com/YOUR_USERNAME/nexalaunch",
+        downloads: 0, previewUrl: "https://greenscape104.netlify.app/", repoUrl: "https://github.com/sahriarovi174506/greenscape.git",
         color: "#00e5c8",
         images: ["https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80", "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80"],
     },
