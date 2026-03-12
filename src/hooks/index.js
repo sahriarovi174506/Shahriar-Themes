@@ -56,7 +56,7 @@ export function useDownloads(initial, repoUrl) {
 
     // Trigger actual download from GitHub
     if (repoUrl) {
-      const zipUrl = `${repoUrl}/archive/refs/heads/main.zip`;
+      const zipUrl = `${repoUrl.replace(/\.git$/, "")}/archive/refs/heads/main.zip`;
       const link = document.createElement("a");
       link.href = zipUrl;
       link.download = "";
@@ -106,7 +106,7 @@ export function useDownloadsApi(templateId, initialCount, repoUrl) {
 
     // Trigger GitHub zip download
     if (repoUrl) {
-      const zipUrl = `${repoUrl}/archive/refs/heads/main.zip`;
+      const zipUrl = `${repoUrl.replace(/\.git$/, "")}/archive/refs/heads/main.zip`;
       const link = document.createElement("a");
       link.href = zipUrl;
       link.download = "";
