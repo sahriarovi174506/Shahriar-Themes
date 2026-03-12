@@ -43,7 +43,12 @@ export default async function handler(req, res) {
         }
     } catch (error) {
         console.error(`KV Error for ID ${id}:`, error);
-        return res.status(500).json({ error: "KV database connection error" });
+        // Fallback to static count from template metadata instead of 500 error
+        return res.status(200).json({
+            id: templateId,
+            count: template.downloads,
+            warning: "KV database connection error, using static fallback"
+        });
     }
 
     return res.status(405).json({ error: "Method not allowed" });

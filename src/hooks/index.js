@@ -97,22 +97,38 @@ export function useDownloadsApi(templateId, initialCount, repoUrl) {
   const download = async () => {
     if (clicked) return;
     setClicked(true);
-    setCount(c => c + 1);
-
-    // Post increment to backend (fire and forget)
-    if (templateId) {
-      fetch(apiUrl(`/api/downloads/${templateId}`), { method: "POST" }).catch(() => { });
-    }
 
     // Trigger GitHub zip download
     if (repoUrl) {
-      const zipUrl = `${repoUrl.replace(/\.git$/, "")}/archive/refs/heads/main.zip`;
+      const cleanRepoUrl = repoUrl.replace(/\.git$/, "");
+      const zipUrl = `${cleanRepoUrl}/archive/refs/heads/main.zip`;
       const link = document.createElement("a");
       link.href = zipUrl;
       link.download = "";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    }
+
+    // Update count on server and sync local state
+    if (templateId) {
+      try {
+        const res = await fetch(apiUrl(`/api/downloads/${templateId}`), { method: "POST" });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.count !== undefined) {
+            setCount(data.count);
+          }
+        } else {
+          // Optimistic fallback if server fails
+          setCount(c => c + 1);
+        }
+      } catch (err) {
+        console.error("Failed to update download count:", err);
+        setCount(c => c + 1);
+      }
+    } else {
+      setCount(c => c + 1);
     }
   };
 
