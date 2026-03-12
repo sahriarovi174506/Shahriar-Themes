@@ -1,39 +1,52 @@
-import { Resend } from "resend";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
-    if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
-    const { name, email, subject, message } = req.body;
+  const { name, email, subject, message } = req.body;
 
-    if (!name || !email || !message) {
-        return res.status(400).json({ error: "name, email, and message are required." });
-    }
+  if (!name || !email || !message) {
+    return res.status(400).json({ error: "name, email, and message are required." });
+  }
 
-    try {
-        await resend.emails.send({
-            from: process.env.RESEND_FROM_EMAIL,
-            to: process.env.RESEND_TO_EMAIL,
-            replyTo: email,
-            subject: subject ? `[Shahriar Themes] ${subject}` : `[Shahriar Themes] New message from ${name}`,
-            html: `
-        <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
-          <h2 style="color:#00e5c8">New Contact Form Submission</h2>
-          <table style="width:100%;border-collapse:collapse">
-            <tr><td style="padding:8px;font-weight:bold;color:#666">Name</td><td style="padding:8px">${name}</td></tr>
-            <tr><td style="padding:8px;font-weight:bold;color:#666">Email</td><td style="padding:8px"><a href="mailto:${email}">${email}</a></td></tr>
-            <tr><td style="padding:8px;font-weight:bold;color:#666">Subject</td><td style="padding:8px">${subject || "(none)"}</td></tr>
-          </table>
-          <div style="margin-top:20px;padding:16px;background:#f4f4f4;border-radius:8px">
-            <p style="margin:0;white-space:pre-wrap">${message}</p>
+  // Configure Nodemailer with Gmail App Password
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  const mailOptions = {
+    from: `"${name}" <${process.env.EMAIL_USER}>`, // Gmail requires sender to be the authenticated user
+    to: process.env.CONTACT_TO_EMAIL,
+    replyTo: email,
+    subject: subject ? `[Shahriar Themes] ${subject}` : `[Shahriar Themes] New message from ${name}`,
+    html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;border:1px solid #eee;border-radius:10px;overflow:hidden">
+          <div style="background:#00e5c8;padding:20px;text-align:center;color:#fff">
+            <h2 style="margin:0">New Contact Form Submission</h2>
+          </div>
+          <div style="padding:20px;color:#333">
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Subject:</strong> ${subject || "(none)"}</p>
+            <hr style="border:0;border-top:1px solid #eee;margin:20px 0">
+            <p style="white-space:pre-wrap">${message}</p>
+          </div>
+          <div style="background:#f9f9f9;padding:15px;text-align:center;color:#999;font-size:12px">
+            Sent from Shahriar Themes Contact Form
           </div>
         </div>
       `,
-        });
-        return res.status(200).json({ success: true });
-    } catch (error) {
-        console.error("Contact email error:", error);
-        return res.status(500).json({ error: "Failed to send email. Please try again." });
-    }
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    console.error("Contact email error:", error);
+    return res.status(500).json({ error: "Failed to send email. Please try again." });
+  }
 }
