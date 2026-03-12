@@ -1,61 +1,75 @@
-import { kv } from "@vercel/kv";
+import Redis from "ioredis";
 import { TEMPLATES } from "../templates-data.js";
+
+// Lazy-initialized Redis client
+let redis = null;
+const getRedisClient = () => {
+    if (redis) return redis;
+    if (!process.env.REDIS_URL) return null;
+    try {
+        redis = new Redis(process.env.REDIS_URL);
+        return redis;
+    } catch (err) {
+        console.error("Redis Init Error:", err);
+        return null;
+    }
+};
 
 export default async function handler(req, res) {
     const { id } = req.query;
-    console.log(`Download request for ID: ${id}, Method: ${req.method}`);
 
     // Ensure ID is a number
     const templateId = Number(id);
     const template = TEMPLATES.find((t) => t.id === templateId);
 
     if (!template) {
-        console.error(`Template not found for ID: ${id}`);
         return res.status(404).json({ error: "Template not found" });
     }
 
     const key = `downloads:${templateId}`;
 
-    // Diagnostic logging for KV environment variables (log presence, not values)
-    if (!process.env.KV_REST_API_URL || !process.env.KV_REST_API_TOKEN) {
-        console.warn(`Environment variables missing: ${!process.env.KV_REST_API_URL ? "KV_REST_API_URL " : ""}${!process.env.KV_REST_API_TOKEN ? "KV_REST_API_TOKEN" : ""}`);
-    } else {
-        console.log("KV environment variables are present.");
-    }
-
-    // Add basic CORS if needed (though usually same-origin on Vercel)
+    // CORS headers
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-    if (req.method === "OPTIONS") {
-        return res.status(200).end();
-    }
+    if (req.method === "OPTIONS") return res.status(200).end();
 
     try {
+        const client = getRedisClient();
+
+        if (!client) {
+            console.warn("Redis client not available, using fallback.");
+            return res.status(200).json({
+                id: templateId,
+                count: template.downloads,
+                isFallback: true,
+                warning: "Database not connected"
+            });
+        }
+
         if (req.method === "POST") {
-            let newCount = await kv.incr(key);
+            let newCount = await client.incr(key);
+            // Seed if it's the first time and we have initial data
             if (newCount === 1 && template.downloads > 0) {
                 newCount = template.downloads + 1;
-                await kv.set(key, newCount);
+                await client.set(key, newCount);
             }
-            console.log(`Incremented downloads for ${template.name} (ID: ${templateId}). New count: ${newCount}`);
             return res.status(200).json({ success: true, id: templateId, count: newCount });
         }
 
         if (req.method === "GET") {
-            const stored = await kv.get(key);
+            const stored = await client.get(key);
             const count = stored !== null ? Number(stored) : template.downloads;
             return res.status(200).json({ id: templateId, count });
         }
     } catch (error) {
-        console.error(`KV Error for ID ${id}:`, error);
-        // Fallback to static count from template metadata instead of 500 error
+        console.error("API Logic Error:", error);
         return res.status(200).json({
             id: templateId,
             count: template.downloads,
             isFallback: true,
-            warning: "KV database connection error, using static fallback"
+            warning: "Server fallback"
         });
     }
 

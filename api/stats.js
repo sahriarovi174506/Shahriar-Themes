@@ -1,17 +1,33 @@
 import Redis from "ioredis";
 import { TEMPLATES } from "./templates-data.js";
 
-const redis = new Redis(process.env.REDIS_URL || "");
+// Lazy-initialized Redis client
+let redis = null;
+const getRedisClient = () => {
+    if (redis) return redis;
+    if (!process.env.REDIS_URL) return null;
+    try {
+        redis = new Redis(process.env.REDIS_URL);
+        return redis;
+    } catch (err) {
+        console.error("Redis Init Error:", err);
+        return null;
+    }
+};
 
 export default async function handler(req, res) {
     if (req.method !== "GET") return res.status(405).json({ error: "Method not allowed" });
 
     try {
-        if (!process.env.REDIS_URL) throw new Error("Missing REDIS_URL");
+        const client = getRedisClient();
+
+        if (!client) {
+            throw new Error("Missing REDIS_URL or Connection Error");
+        }
 
         const keys = TEMPLATES.map(t => `downloads:${t.id}`);
         // ioredis mget returns array of strings or null
-        const counts = await redis.mget(...keys);
+        const counts = await client.mget(...keys);
 
         let totalDownloads = 0;
         TEMPLATES.forEach((t, i) => {
