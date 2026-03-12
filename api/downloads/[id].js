@@ -16,6 +16,13 @@ export default async function handler(req, res) {
 
     const key = `downloads:${templateId}`;
 
+    // Diagnostic logging for KV environment variables (log presence, not values)
+    if (!process.env.KV_REST_API_URL || !process.env.KV_REST_API_TOKEN) {
+        console.warn(`Environment variables missing: ${!process.env.KV_REST_API_URL ? "KV_REST_API_URL " : ""}${!process.env.KV_REST_API_TOKEN ? "KV_REST_API_TOKEN" : ""}`);
+    } else {
+        console.log("KV environment variables are present.");
+    }
+
     // Add basic CORS if needed (though usually same-origin on Vercel)
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
