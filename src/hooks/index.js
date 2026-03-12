@@ -98,6 +98,9 @@ export function useDownloadsApi(templateId, initialCount, repoUrl) {
     if (clicked) return;
     setClicked(true);
 
+    // OPTIMISTIC UPDATE: Increment immediately on the screen
+    setCount(c => c + 1);
+
     // Trigger GitHub zip download
     if (repoUrl) {
       const cleanRepoUrl = repoUrl.replace(/\.git$/, "");
@@ -110,25 +113,20 @@ export function useDownloadsApi(templateId, initialCount, repoUrl) {
       document.body.removeChild(link);
     }
 
-    // Update count on server and sync local state
+    // Update count on server
     if (templateId) {
       try {
         const res = await fetch(apiUrl(`/api/downloads/${templateId}`), { method: "POST" });
         if (res.ok) {
           const data = await res.json();
-          if (data && data.count !== undefined) {
+          // ONLY update if the server actually saved it (not a fallback)
+          if (data && data.count !== undefined && !data.isFallback) {
             setCount(data.count);
           }
-        } else {
-          // Optimistic fallback if server fails
-          setCount(c => c + 1);
         }
       } catch (err) {
-        console.error("Failed to update download count:", err);
-        setCount(c => c + 1);
+        console.error("Failed to update download count on server:", err);
       }
-    } else {
-      setCount(c => c + 1);
     }
   };
 

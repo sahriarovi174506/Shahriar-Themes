@@ -27,6 +27,7 @@ export default async function handler(req, res) {
             totalDownloads,
             happyClients: 120,
             avgRating: 5,
+            isFallback: true,
             warning: "KV database connection error, using static fallback"
         });
     }

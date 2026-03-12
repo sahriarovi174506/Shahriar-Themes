@@ -47,6 +47,7 @@ export default async function handler(req, res) {
         return res.status(200).json({
             id: templateId,
             count: template.downloads,
+            isFallback: true,
             warning: "KV database connection error, using static fallback"
         });
     }
