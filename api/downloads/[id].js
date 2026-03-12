@@ -16,6 +16,15 @@ export default async function handler(req, res) {
 
     const key = `downloads:${templateId}`;
 
+    // Add basic CORS if needed (though usually same-origin on Vercel)
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+    if (req.method === "OPTIONS") {
+        return res.status(200).end();
+    }
+
     try {
         if (req.method === "POST") {
             let newCount = await kv.incr(key);
@@ -23,8 +32,8 @@ export default async function handler(req, res) {
                 newCount = template.downloads + 1;
                 await kv.set(key, newCount);
             }
-            console.log(`Incremented downloads for ${template.name}. New count: ${newCount}`);
-            return res.status(200).json({ id: templateId, count: newCount });
+            console.log(`Incremented downloads for ${template.name} (ID: ${templateId}). New count: ${newCount}`);
+            return res.status(200).json({ success: true, id: templateId, count: newCount });
         }
 
         if (req.method === "GET") {
@@ -34,7 +43,7 @@ export default async function handler(req, res) {
         }
     } catch (error) {
         console.error(`KV Error for ID ${id}:`, error);
-        return res.status(500).json({ error: "Internal server error" });
+        return res.status(500).json({ error: "KV database connection error" });
     }
 
     return res.status(405).json({ error: "Method not allowed" });
