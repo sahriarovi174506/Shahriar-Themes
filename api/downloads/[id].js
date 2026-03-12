@@ -1,5 +1,5 @@
 import { kv } from "@vercel/kv";
-import { TEMPLATES } from "../../src/data/templates.js";
+import { TEMPLATES } from "../templates-data.js";
 
 export default async function handler(req, res) {
     const { id } = req.query;

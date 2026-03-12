@@ -1,4 +1,4 @@
-import { TEMPLATES } from "../src/data/templates.js";
+import { TEMPLATES } from "./templates-data.js";
 
 export default function handler(req, res) {
     if (req.method !== "GET") return res.status(405).json({ error: "Method not allowed" });
