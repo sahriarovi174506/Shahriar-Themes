@@ -18,7 +18,7 @@ export function TemplateDetailPage({ template, setPage, setSelected }) {
             <div style={{ marginBottom:"2rem" }}>
               <button className="btn btn-ghost btn-sm" onClick={() => { setPage("templates"); window.scrollTo({top:0}); }}>← Back to Templates</button>
             </div>
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 38rem", gap:"4rem", alignItems:"start" }}>
+            <div className="split-2 split-2--detail">
               <div>
                 <div className="detail-preview fade-up animated">
                   <img src={template.images[activeImg] || template.images[0]} alt={template.name} />

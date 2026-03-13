@@ -1,12 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAnimateOnScroll } from "../hooks";
 import { apiUrl } from "../config";
+import { PROFILE } from "../data/profile";
 
 export function ContactPage() {
   useAnimateOnScroll();
   const [form, setForm] = useState({ name:"", email:"", subject:"", message:"" });
   const [status, setStatus] = useState("idle"); // idle | loading | success | error
   const set = (k, v) => setForm(f => ({ ...f, [k]:v }));
+
+  useEffect(() => {
+    if (status !== "success") return;
+    const t = setTimeout(() => setStatus("idle"), 8000);
+    return () => clearTimeout(t);
+  }, [status]);
+
   const submit = async (e) => {
     e.preventDefault();
     setStatus("loading");
@@ -28,10 +36,10 @@ export function ContactPage() {
   };
 
   const contactInfo = [
-    { icon:"✉", title:"Email", val:"hello@shahriar-themes.com" },
-    { icon:"🌐", title:"Website", val:"shahriar-themes.com" },
-    { icon:"📍", title:"Location", val:"Remote — Available Worldwide" },
-    { icon:"⏱", title:"Response Time", val:"Within 24 hours" },
+    { icon:"✉", title:"Email", val: PROFILE.email, href: `mailto:${PROFILE.email}` },
+    { icon:"💬", title:"WhatsApp", val: PROFILE.whatsapp, href: PROFILE.whatsappUrl },
+    { icon:"👤", title:"Facebook", val:"facebook.com/profile.php?id=61585204776541", href: PROFILE.facebookUrl },
+    { icon:"💻", title:"GitHub", val:"github.com/sahriarovi174506", href: PROFILE.githubUrl },
   ];
   return (
     <>
@@ -44,7 +52,7 @@ export function ContactPage() {
       </div>
       <section style={{ paddingTop:"0" }}>
         <div className="container">
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1.4fr", gap:"6rem", alignItems:"start" }}>
+          <div className="split-2 split-2--contact">
             <div>
               <div className="section-eyebrow fade-left animated">Get in Touch</div>
               <h2 style={{ fontSize:"3.2rem", marginBottom:"1.6rem" }} className="fade-left delay-1 animated">Ready to build something great?</h2>
@@ -53,7 +61,18 @@ export function ContactPage() {
                 {contactInfo.map((c, i) => (
                   <div key={c.title} className={`contact-info-item fade-left delay-${i+2} animated`}>
                     <div className="contact-icon">{c.icon}</div>
-                    <div><h4>{c.title}</h4><p>{c.val}</p></div>
+                    <div>
+                      <h4>{c.title}</h4>
+                      <p>
+                        {c.href ? (
+                          <a href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel={c.href.startsWith("http") ? "noreferrer" : undefined}>
+                            {c.val}
+                          </a>
+                        ) : (
+                          c.val
+                        )}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -63,8 +82,18 @@ export function ContactPage() {
                 <div className="form-success" style={{ borderColor:"#ff5e78" }}>
                   <div style={{ fontSize:"3rem", marginBottom:"1.6rem" }}>✕</div>
                   <h3 style={{ fontSize:"2.4rem", marginBottom:"1rem" }}>Failed to Send</h3>
-                  <p style={{ color: "var(--text-2)", fontSize: "1.5rem" }}>Something went wrong. Please try again or email us directly at hello@shahriar-themes.com.</p>
+                  <p style={{ color: "var(--text-2)", fontSize: "1.5rem" }}>Something went wrong. Please try again or email us directly at {PROFILE.email}.</p>
                   <button className="btn btn-primary" style={{ marginTop:"2.4rem" }} onClick={() => setStatus("idle")}>Try Again →</button>
+                </div>
+              )}
+              {status === "success" && (
+                <div className="form-success">
+                  <div style={{ fontSize:"3rem", marginBottom:"1.6rem" }}>âœ“</div>
+                  <h3 style={{ fontSize:"2.4rem", marginBottom:"1rem" }}>Message Sent</h3>
+                  <p style={{ color: "var(--text-2)", fontSize: "1.5rem" }}>
+                    Thanks! I'll get back to you within 24 hours. This will reset shortly.
+                  </p>
+                  <button className="btn btn-primary" style={{ marginTop:"2.4rem" }} onClick={() => setStatus("idle")}>Send Another â†’</button>
                 </div>
               )}
               {(status === "idle" || status === "loading") && (

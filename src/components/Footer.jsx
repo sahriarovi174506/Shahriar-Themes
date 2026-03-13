@@ -1,5 +1,15 @@
+import { PROFILE } from "../data/profile";
+import { Icon } from "./Icon";
+
 export function Footer({ setPage }) {
   const go = (p) => { setPage(p); window.scrollTo({ top: 0 }); };
+  const year = new Date().getFullYear();
+  const socials = [
+    { label: "GitHub", icon: "github", href: PROFILE.githubUrl },
+    { label: "Facebook", icon: "facebook", href: PROFILE.facebookUrl },
+    { label: "WhatsApp", icon: "whatsapp", href: PROFILE.whatsappUrl },
+    { label: "Email", icon: "mail", href: `mailto:${PROFILE.email}` },
+  ];
   return (
     <footer className="footer">
       <div className="container">
@@ -8,10 +18,12 @@ export function Footer({ setPage }) {
             <div className="navbar-logo" style={{ marginBottom:"1.6rem" }}>
               <span style={{ color:"var(--accent)" }}>✦</span> Shahriar<span>Themes</span>
             </div>
-            <p>Free premium website templates and custom web development by Shahriar. Build something remarkable.</p>
+            <p>Free premium website templates and custom web development by {PROFILE.name}. Build something remarkable.</p>
             <div style={{ display:"flex", gap:"1rem", marginTop:"2rem" }}>
-              {["GH","TW","LI","DR"].map(s => (
-                <div key={s} style={{ width:"3.6rem",height:"3.6rem",borderRadius:"50%",background:"var(--bg-3)",border:"1px solid var(--border)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.1rem",fontWeight:"700",color:"var(--text-2)",cursor:"pointer" }}>{s}</div>
+              {socials.map(s => (
+                <a key={s.label} href={s.href} target={s.href.startsWith("http") ? "_blank" : undefined} rel={s.href.startsWith("http") ? "noreferrer" : undefined} aria-label={s.label} title={s.label} style={{ width:"3.6rem",height:"3.6rem",borderRadius:"50%",background:"var(--bg-3)",border:"1px solid var(--border)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.6rem",color:"var(--text-2)",cursor:"pointer" }}>
+                  <Icon name={s.icon} />
+                </a>
               ))}
             </div>
           </div>
@@ -41,7 +53,7 @@ export function Footer({ setPage }) {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© 2025 Shahriar Themes. Crafted with ✦ by Shahriar.</span>
+          <span>© {year} Shahriar Themes. Crafted with ✦ by {PROFILE.name}.</span>
           <span>All templates free forever.</span>
         </div>
       </div>

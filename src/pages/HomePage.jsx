@@ -68,7 +68,7 @@ export function HomePage({ setPage, setSelected }) {
       {/* Featured Templates */}
       <section style={{ background:"var(--bg-2)", borderTop:"1px solid var(--border)", borderBottom:"1px solid var(--border)" }}>
         <div className="container">
-          <div style={{ display:"flex", alignItems:"flex-end", justifyContent:"space-between", marginBottom:"4.8rem", flexWrap:"wrap", gap:"1.6rem" }}>
+          <div className="section-head-row">
             <div>
               <div className="section-eyebrow fade-left animated">Featured Templates</div>
               <h2 className="section-title fade-left delay-1 animated">Download & Deploy Today</h2>
@@ -82,6 +82,26 @@ export function HomePage({ setPage, setSelected }) {
             <Slider perView={3} gap={24}>
               {TEMPLATES.map(t => <TemplateCard key={t.id} t={t} setPage={setPage} setSelected={setSelected}/>)}
             </Slider>
+          </div>
+        </div>
+      </section>
+
+      {/* Global Impact */}
+      <section className="impact-section noise">
+        <div className="impact-bg" />
+        <div className="container">
+          <div className="impact-content">
+            <div className="section-eyebrow fade-up animated" style={{ justifyContent: "center", marginBottom: "2rem" }}>Trust & Community</div>
+            <h2 className="section-title fade-up delay-1 animated" style={{ marginBottom: "1rem" }}>Building for the Web, Together</h2>
+            <div className="impact-stat fade-up delay-2 animated">
+              <div className="impact-number">
+                <AnimCount target={stats.totalDownloads} />
+              </div>
+              <div className="impact-label">Total Downloads</div>
+            </div>
+            <p className="impact-desc fade-up delay-3 animated">
+              Providing modern, accessible, and fast web templates to developers and creators worldwide.
+            </p>
           </div>
         </div>
       </section>
@@ -110,12 +130,12 @@ export function HomePage({ setPage, setSelected }) {
       {/* Why Choose Me */}
       <section style={{ background:"var(--bg-2)", borderTop:"1px solid var(--border)", borderBottom:"1px solid var(--border)" }}>
         <div className="container">
-          <div className="whyChooseMe_row" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"8rem", alignItems:"center" }}>
+          <div className="whyChooseMe_row">
             <div>
               <div className="section-eyebrow fade-left animated">Why Choose Me</div>
               <h2 className="section-title fade-left delay-1 animated">Code you can actually trust</h2>
               <p style={{ color:"var(--text-2)", fontSize:"1.6rem", lineHeight:"1.7", marginBottom:"3.2rem" }} className="fade-left delay-2 animated">
-                I've built websites for startups, freelancers, agencies, and Fortune 500 clients. Every project gets the same obsessive attention to detail.
+                I've worked under a Fiverr Top Rated Seller for 3 years and completed hundreds of projects. Every project gets the same obsessive attention to detail.
               </p>
               <button className="btn btn-primary fade-left delay-3 animated" onClick={() => { setPage("about"); window.scrollTo({top:0}); }}>
                 About Me →

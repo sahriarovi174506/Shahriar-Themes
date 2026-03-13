@@ -10,7 +10,7 @@ export function apiUrl(pathname) {
   // Otherwise, use a relative path.
   try {
     return new URL(pathname, API_URL || window.location.origin).toString();
-  } catch (e) {
+  } catch {
     return pathname;
   }
 }

@@ -48,7 +48,7 @@ export function ServicesPage({ setPage }) {
 
       <section style={{ background:"var(--bg-2)", borderTop:"1px solid var(--border)", borderBottom:"1px solid var(--border)" }}>
         <div className="container">
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"8rem", alignItems:"start" }}>
+          <div className="split-2 split-2--start split-2--gap-xl">
             <div>
               <div className="section-eyebrow fade-left animated">Process</div>
               <h2 className="section-title fade-left delay-1 animated">How we work together</h2>

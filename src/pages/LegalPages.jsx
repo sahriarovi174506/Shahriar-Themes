@@ -1,4 +1,5 @@
 import { useAnimateOnScroll } from "../hooks";
+import { PROFILE } from "../data/profile";
 
 export function PrivacyPage() {
   useAnimateOnScroll();
@@ -28,9 +29,9 @@ export function PrivacyPage() {
             <h2>Cookies</h2>
             <p>We use only essential cookies required for site functionality. We do not use advertising or tracking cookies. No cookie consent banner is required as we only use strictly necessary cookies.</p>
             <h2>Your Rights</h2>
-            <p>You have the right to request access to, correction of, or deletion of any personal data we hold about you. To exercise these rights, contact us at privacy@shahriar-themes.com.</p>
+            <p>You have the right to request access to, correction of, or deletion of any personal data we hold about you. To exercise these rights, contact us at {PROFILE.email}.</p>
             <h2>Contact</h2>
-            <p>For privacy-related enquiries, email us at privacy@shahriar-themes.com. We will respond within 48 hours.</p>
+            <p>For privacy-related enquiries, email us at {PROFILE.email}. We will respond within 48 hours.</p>
           </div>
         </div>
       </section>
@@ -72,7 +73,7 @@ export function TermsPage() {
             <h2>Governing Law</h2>
             <p>These terms are governed by the laws of the United Kingdom. Any disputes shall be resolved in courts of competent jurisdiction in England and Wales.</p>
             <h2>Contact</h2>
-            <p>For questions about these terms, contact us at legal@shahriar-themes.com.</p>
+            <p>For questions about these terms, contact us at {PROFILE.email}.</p>
           </div>
         </div>
       </section>
