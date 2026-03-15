@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./index.css";
-import { useScrollTop } from "./hooks";
+import { useScrollTop, useGsapSiteAnimations, useSmoothScroll } from "./hooks";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 
@@ -17,6 +17,8 @@ export default function App() {
   const [page, setPage] = useState("home");
   const [selected, setSelected] = useState(null);
   const showTop = useScrollTop();
+  useSmoothScroll(page);
+  useGsapSiteAnimations(page);
 
   // Re-run animations on page change
   useEffect(() => { window.scrollTo({ top: 0 }); }, [page]);

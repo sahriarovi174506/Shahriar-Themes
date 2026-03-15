@@ -43,7 +43,7 @@ export function ContactPage() {
   ];
   return (
     <>
-      <div className="page-header">
+      <div className="page-header" data-parallax="16">
         <div className="container">
           <div className="section-eyebrow animated" style={{ justifyContent:"center" }}>Contact</div>
           <h1 className="fade-up animated">Let's Work Together</h1>
@@ -77,7 +77,7 @@ export function ContactPage() {
                 ))}
               </div>
             </div>
-            <div className="fade-right animated">
+            <div className="fade-right animated" data-parallax="10">
               {status === "error" && (
                 <div className="form-success" style={{ borderColor:"#ff5e78" }}>
                   <div style={{ fontSize:"3rem", marginBottom:"1.6rem" }}>✕</div>

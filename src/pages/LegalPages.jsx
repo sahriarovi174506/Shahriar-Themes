@@ -5,7 +5,7 @@ export function PrivacyPage() {
   useAnimateOnScroll();
   return (
     <>
-      <div className="page-header">
+      <div className="page-header" data-parallax="16">
         <div className="container">
           <h1 className="fade-up animated">Privacy Policy</h1>
           <p className="fade-up delay-1 animated">Last updated: January 1, 2025</p>
@@ -43,7 +43,7 @@ export function TermsPage() {
   useAnimateOnScroll();
   return (
     <>
-      <div className="page-header">
+      <div className="page-header" data-parallax="16">
         <div className="container">
           <h1 className="fade-up animated">Terms & Conditions</h1>
           <p className="fade-up delay-1 animated">Last updated: January 1, 2025</p>

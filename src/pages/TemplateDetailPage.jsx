@@ -20,7 +20,7 @@ export function TemplateDetailPage({ template, setPage, setSelected }) {
             </div>
             <div className="split-2 split-2--detail">
               <div>
-                <div className="detail-preview fade-up animated">
+                <div className="detail-preview fade-up animated" data-parallax="12">
                   <img src={template.images[activeImg] || template.images[0]} alt={template.name} />
                 </div>
                 <div className="detail-thumbnails fade-up delay-1 animated">
@@ -31,7 +31,7 @@ export function TemplateDetailPage({ template, setPage, setSelected }) {
                   ))}
                 </div>
               </div>
-              <div className="detail-sidebar fade-right animated">
+              <div className="detail-sidebar fade-right animated" data-parallax="10">
                 <div className="detail-sidebar-card">
                   <span className="badge badge-accent" style={{ marginBottom:"1.6rem" }}>{template.category}</span>
                   <h1 style={{ fontSize:"3.2rem", marginBottom:"1.2rem" }}>{template.name}</h1>

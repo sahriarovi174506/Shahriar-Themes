@@ -22,7 +22,7 @@ export function ServicesPage({ setPage }) {
   ];
   return (
     <>
-      <div className="page-header">
+      <div className="page-header" data-parallax="16">
         <div className="container">
           <div className="section-eyebrow animated" style={{ justifyContent:"center" }}>Services</div>
           <h1 className="fade-up animated">Custom Web Development</h1>
@@ -94,7 +94,7 @@ export function ServicesPage({ setPage }) {
 
       <section>
         <div className="container">
-          <div className="cta-section fade-up animated">
+          <div className="cta-section fade-up animated" data-parallax="10">
             <h2>Ready to start your project?</h2>
             <p>Let's talk about what you need. I'll have a quote in your inbox within 24 hours.</p>
             <div className="cta-actions">

@@ -36,10 +36,10 @@ export function HomePage({ setPage, setSelected }) {
     <>
       {/* Hero */}
       <section className="hero noise">
-        <div className="hero-bg"/>
-        <div className="hero-grid-lines"/>
+        <div className="hero-bg" data-parallax="50"/>
+        <div className="hero-grid-lines" data-parallax="-25"/>
         <div className="container">
-          <div className="hero-content">
+          <div className="hero-content" data-parallax="18">
             <div className="hero-eyebrow fade-up animated"><span>✦</span> Free Templates & Custom Dev</div>
             <h1 className="hero-title fade-up delay-1 animated">
               Build sites that<br/><span className="highlight">actually convert</span>
@@ -88,9 +88,9 @@ export function HomePage({ setPage, setSelected }) {
 
       {/* Global Impact */}
       <section className="impact-section noise">
-        <div className="impact-bg" />
+        <div className="impact-bg" data-parallax="35" />
         <div className="container">
-          <div className="impact-content">
+          <div className="impact-content" data-parallax="12">
             <div className="section-eyebrow fade-up animated" style={{ justifyContent: "center", marginBottom: "2rem" }}>Trust & Community</div>
             <h2 className="section-title fade-up delay-1 animated" style={{ marginBottom: "1rem" }}>Building for the Web, Together</h2>
             <div className="impact-stat fade-up delay-2 animated">

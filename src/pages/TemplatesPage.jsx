@@ -1,16 +1,30 @@
-import { useState } from "react";
-import { useAnimateOnScroll } from "../hooks";
+﻿import { useEffect } from "react";
+import { useAnimateOnScroll, useProductSearch } from "../hooks";
 import { TemplateCard } from "../components/TemplateCard";
-import { TEMPLATES } from "../data/templates";
 
 export function TemplatesPage({ setPage, setSelected }) {
   useAnimateOnScroll();
-  const [filter, setFilter] = useState("All");
   const cats = ["All", "Landing Page", "Portfolio", "Business", "Blog"];
-  const visible = filter === "All" ? TEMPLATES : TEMPLATES.filter(t => t.category === filter);
+  const {
+    query,
+    setQuery,
+    filters,
+    setFilters,
+    results,
+    loading,
+    meta,
+  } = useProductSearch({ initialFilters: { category: "All" }, pageSize: 12 });
+
+  const activeCategory = filters?.category || "All";
+  useEffect(() => {
+    if (!cats.includes(activeCategory)) {
+      setFilters((prev) => ({ ...prev, category: "All" }));
+    }
+  }, [activeCategory, setFilters]);
+
   return (
     <>
-      <div className="page-header">
+      <div className="page-header" data-parallax="16">
         <div className="container">
           <div className="section-eyebrow animated" style={{ justifyContent:"center" }}>Free Templates</div>
           <h1 className="fade-up animated">Browse All Templates</h1>
@@ -19,21 +33,47 @@ export function TemplatesPage({ setPage, setSelected }) {
       </div>
       <section style={{ paddingTop:"0" }}>
         <div className="container">
+          <div className="search-row fade-up animated">
+            <div className="search-input-wrap">
+              <input
+                className="search-input"
+                type="search"
+                placeholder="Search templates, tech, features..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                aria-label="Search templates"
+              />
+              {query && (
+                <button className="search-clear" onClick={() => setQuery("")} aria-label="Clear search">
+                  Clear
+                </button>
+              )}
+            </div>
+            <div className="search-meta">
+              {loading ? "Searching..." : `${meta.total} result${meta.total === 1 ? "" : "s"}`}
+            </div>
+          </div>
           <div className="filter-row fade-up animated">
-            {cats.map(c => (
-              <button key={c} className={`filter-btn ${filter === c ? "active" : ""}`} onClick={() => setFilter(c)}>{c}</button>
+            {cats.map((c) => (
+              <button
+                key={c}
+                className={`filter-btn ${activeCategory === c ? "active" : ""}`}
+                onClick={() => setFilters((prev) => ({ ...prev, category: c }))}
+              >
+                {c}
+              </button>
             ))}
           </div>
           <div className="grid-3">
-            {visible.map((t, i) => (
-              <div key={t.id} className={`fade-up delay-${(i%3)+1} animated`}>
-                <TemplateCard t={t} setPage={setPage} setSelected={setSelected}/>
+            {results.map((t, i) => (
+              <div key={t.id} className={`fade-up delay-${(i % 3) + 1} animated`}>
+                <TemplateCard t={t} setPage={setPage} setSelected={setSelected} />
               </div>
             ))}
           </div>
-          {visible.length === 0 && (
+          {results.length === 0 && (
             <div style={{ textAlign:"center", padding:"6rem 0", color:"var(--text-3)" }}>
-              <div style={{ fontSize:"4rem", marginBottom:"1.6rem" }}>🔍</div>
+              <div style={{ fontSize:"4rem", marginBottom:"1.6rem" }}>ðŸ”</div>
               <p>No templates in this category yet. Check back soon!</p>
             </div>
           )}

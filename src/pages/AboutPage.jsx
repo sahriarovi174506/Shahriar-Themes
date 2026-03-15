@@ -11,7 +11,7 @@ export function AboutPage({ setPage }) {
   const stack = ["HTML","CSS","JavaScript","React","jQuery","Bootstrap","Tailwind CSS","SCSS","Figma","PSD","XD","Git"];
   return (
     <>
-      <div className="page-header">
+      <div className="page-header" data-parallax="16">
         <div className="container">
           <div className="section-eyebrow animated" style={{ justifyContent:"center" }}>About</div>
           <h1 className="fade-up animated">Hi, I'm {PROFILE.name}</h1>
@@ -22,7 +22,11 @@ export function AboutPage({ setPage }) {
         <div className="container">
           <div className="split-2">
             <div>
-              <div style={{ aspectRatio:"4/5", borderRadius:"var(--radius-lg)", overflow:"hidden", background:"var(--bg-3)", border:"1px solid var(--border)" }} className="fade-left animated">
+              <div
+                style={{ aspectRatio:"4/5", borderRadius:"var(--radius-lg)", overflow:"hidden", background:"var(--bg-3)", border:"1px solid var(--border)" }}
+                className="fade-left animated"
+                data-parallax="10"
+              >
                 <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=600&q=80" alt="Developer" style={{ width:"100%", height:"100%", objectFit:"cover" }}/>
               </div>
             </div>

@@ -7,7 +7,7 @@ export function FAQPage({ setPage }) {
   const [open, setOpen] = useState(null);
   return (
     <>
-      <div className="page-header">
+      <div className="page-header" data-parallax="16">
         <div className="container">
           <div className="section-eyebrow animated" style={{ justifyContent:"center" }}>FAQ</div>
           <h1 className="fade-up animated">Frequently Asked Questions</h1>
@@ -27,7 +27,7 @@ export function FAQPage({ setPage }) {
               </div>
             ))}
           </div>
-          <div style={{ textAlign:"center", marginTop:"6rem" }} className="fade-up animated">
+          <div style={{ textAlign:"center", marginTop:"6rem" }} className="fade-up animated" data-parallax="10">
             <p style={{ color:"var(--text-2)", marginBottom:"2rem", fontSize:"1.6rem" }}>Still have questions?</p>
             <button className="btn btn-primary btn-lg" onClick={() => { setPage("contact"); window.scrollTo({top:0}); }}>Get in Touch →</button>
           </div>
