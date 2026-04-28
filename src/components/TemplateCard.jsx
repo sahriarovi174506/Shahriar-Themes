@@ -1,43 +1,62 @@
+import { memo, useCallback } from "react";
 import { useDownloadsApi } from "../hooks";
+import { scrollToTop } from "../utils/scroll";
 import { Icon } from "./Icon";
 
-export function TemplateCard({ t, setPage, setSelected }) {
-  const { count, download, clicked } = useDownloadsApi(t.id, t.downloads, t.repoUrl);
-  const goDetail = () => {
+function TemplateCardComponent({ t, setPage, setSelected }) {
+  const { count, download, clicked } = useDownloadsApi(t.id, t.downloads, t.repoUrl, { fetchOnMount: false });
+  const goDetail = useCallback(() => {
     setSelected(t);
     setPage("detail");
-    window.scrollTo({ top: 0 });
-  };
+    scrollToTop({ immediate: true });
+  }, [setPage, setSelected, t]);
+
+  const openPreview = useCallback(() => {
+    window.open(t.previewUrl, "_blank", "noopener,noreferrer");
+  }, [t.previewUrl]);
 
   return (
-    <div className="card template-card">
+    <div className={`card template-card ${t.isComingSoon ? "coming-soon" : ""}`}>
       <div className="template-card-img">
-        <img src={t.images[0]} alt={t.name} loading="lazy" />
+        <img src={t.images[0]} alt={t.name} loading="lazy" decoding="async" fetchPriority="low" />
+        {t.isComingSoon && <div className="coming-soon-overlay">Coming Soon</div>}
       </div>
       <div className="template-card-body">
         <div className="template-card-meta">
           <span className="badge badge-accent">{t.category}</span>
-          <span className="download-count">
-            <Icon name="download" /> {count.toLocaleString()}
-          </span>
+          {!t.isComingSoon && (
+            <span className="download-count">
+              <Icon name="download" /> {count.toLocaleString()}
+            </span>
+          )}
         </div>
         <div className="template-card-name">{t.name}</div>
         <p className="template-card-desc">{t.desc}</p>
         <div className="template-card-footer template-card-footer--actions">
-          <button className="btn btn-primary btn-sm justify-center" style={{ flex: 1 }} onClick={download}>
-            {clicked ? "Downloaded" : "Download"}
-          </button>
-          <button
-            className="btn btn-preview btn-sm"
-            onClick={() => window.open(t.previewUrl, "_blank", "noopener,noreferrer")}
-          >
-            <Icon name="eye" /> Preview
-          </button>
-          <button className="btn btn-ghost btn-sm" onClick={goDetail}>
-            View <Icon name="arrow" />
-          </button>
+          {t.isComingSoon ? (
+            <button className="btn btn-ghost btn-sm" style={{ width: "100%", justifyContent: "center" }} disabled>
+              Available Soon
+            </button>
+          ) : (
+            <>
+              <button className="btn btn-primary btn-sm justify-center" style={{ flex: 1 }} onClick={download}>
+                {clicked ? "Downloaded" : "Download"}
+              </button>
+              <button
+                className="btn btn-preview btn-sm"
+                onClick={openPreview}
+              >
+                <Icon name="eye" /> Preview
+              </button>
+              <button className="btn btn-ghost btn-sm" onClick={goDetail}>
+                View <Icon name="arrow" />
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
   );
 }
+
+export const TemplateCard = memo(TemplateCardComponent);

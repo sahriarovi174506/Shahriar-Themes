@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { scrollToTop } from "../utils/scroll";
 import { useScrolled } from "../hooks";
 
 export function Navbar({ page, setPage }) {
@@ -8,7 +9,7 @@ export function Navbar({ page, setPage }) {
     ["Home","home"],["Templates","templates"],["Services","services"],
     ["About","about"],["Contact","contact"],
   ];
-  const go = (p) => { setPage(p); setOpen(false); window.scrollTo({ top: 0 }); };
+  const go = (p) => { setPage(p); setOpen(false); scrollToTop({ immediate: true }); };
   return (
     <>
       <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
@@ -26,7 +27,7 @@ export function Navbar({ page, setPage }) {
             </ul>
             <div className="navbar-cta">
               <button className="btn btn-ghost btn-sm" onClick={() => go("templates")}>Browse Templates</button>
-              <button className="btn btn-primary btn-sm" onClick={() => go("contact")}>Hire Me</button>
+              <button className="btn btn-primary btn-sm" onClick={() => go("contact")}>Get a Quote</button>
             </div>
             <button
               className={`hamburger ${open ? "open" : ""}`}
@@ -44,7 +45,7 @@ export function Navbar({ page, setPage }) {
         {nav.map(([label, key]) => (
           <a key={key} onClick={() => go(key)} style={{ cursor:"pointer" }}>{label}</a>
         ))}
-        <button className="btn btn-primary btn-lg" onClick={() => go("contact")}>Hire Me →</button>
+        <button className="btn btn-primary btn-lg" onClick={() => go("contact")}>Get a Quote →</button>
       </div>
     </>
   );

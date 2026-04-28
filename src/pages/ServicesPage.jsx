@@ -1,4 +1,5 @@
 import { useAnimateOnScroll } from "../hooks";
+import { scrollToTop } from "../utils/scroll";
 
 export function ServicesPage({ setPage }) {
   useAnimateOnScroll();
@@ -16,14 +17,14 @@ export function ServicesPage({ setPage }) {
     { n:"05", title:"Launch & Handoff", desc:"I deploy to your host, run final QA, and hand over all source files along with a documentation guide." },
   ];
   const pricing = [
-    { name:"Starter", price:"499", period:"one-time", features:["Single landing page","Up to 5 sections","Contact form","Mobile responsive","Basic SEO","1-week delivery"], featured:false },
-    { name:"Professional", price:"1299", period:"one-time", features:["Up to 6 pages","CMS integration","Blog system","Contact + booking","Advanced SEO","2–3 week delivery", "30-day support"], featured:true },
-    { name:"Enterprise", price:"Custom", period:"quoted", features:["Unlimited pages","Custom functionality","API integrations","E-commerce ready","Premium SEO","Priority support","Dedicated PM"], featured:false },
+    { name:"Landing Page", price:"150", period:"starts at", features:["Single conversion page","A/B test ready","Lead capture form","Mobile responsive","Basic SEO","7-day delivery"], featured:false },
+    { name:"Business Site", price:"300", period:"starts at", features:["Up to 8 pages","CMS integration","Blog system","Contact + booking","Advanced SEO","2–4 week delivery", "30-day support"], featured:true },
+    { name:"Custom Frontend", price:"Custom", period:"quoted", features:["Next.js / TypeScript","Complex animations","API integrations","E-commerce functionality","Performance audit","Priority support"], featured:false },
   ];
   return (
     <>
       <div className="page-header" data-parallax="16">
-        <div className="container">
+        <div className="container" data-aos="fade-up" data-aos-duration="850">
           <div className="section-eyebrow animated" style={{ justifyContent:"center" }}>Services</div>
           <h1 className="fade-up animated">Custom Web Development</h1>
           <p className="fade-up delay-1 animated">Professional websites built to your exact requirements. From idea to live site, I handle everything.</p>
@@ -31,9 +32,16 @@ export function ServicesPage({ setPage }) {
       </div>
       <section style={{ paddingTop:"0" }}>
         <div className="container">
-          <div className="grid-2">
+          <div className="grid-2" data-aos="fade-up" data-aos-duration="900" data-aos-delay="90">
             {services.map((s, i) => (
-              <div key={s.title} className={`card service-card fade-up delay-${(i%2)+1} animated`} style={{ padding:"3.6rem" }}>
+              <div
+                key={s.title}
+                className={`card service-card fade-up delay-${(i%2)+1} animated`}
+                style={{ padding:"3.6rem" }}
+                data-aos="fade-up"
+                data-aos-duration="850"
+                data-aos-delay={120 + i * 80}
+              >
                 <div className="service-icon">{s.icon}</div>
                 <h3 style={{ fontSize:"2.2rem", marginBottom:"1.2rem" }}>{s.title}</h3>
                 <p style={{ marginBottom:"2.4rem" }}>{s.desc}</p>
@@ -48,7 +56,7 @@ export function ServicesPage({ setPage }) {
 
       <section style={{ background:"var(--bg-2)", borderTop:"1px solid var(--border)", borderBottom:"1px solid var(--border)" }}>
         <div className="container">
-          <div className="split-2 split-2--start split-2--gap-xl">
+          <div className="split-2 split-2--start split-2--gap-xl" data-aos="fade-up" data-aos-duration="900">
             <div>
               <div className="section-eyebrow fade-left animated">Process</div>
               <h2 className="section-title fade-left delay-1 animated">How we work together</h2>
@@ -67,9 +75,15 @@ export function ServicesPage({ setPage }) {
               <div className="section-eyebrow fade-right animated">Pricing</div>
               <h2 className="section-title fade-right delay-1 animated">Transparent pricing</h2>
               <p style={{ color:"var(--text-2)", fontSize:"1.6rem", lineHeight:"1.7", marginBottom:"3.2rem" }} className="fade-right delay-2 animated">Fixed-price projects. No hourly billing, no surprises.</p>
-              <div style={{ display:"flex", flexDirection:"column", gap:"2rem" }}>
+              <div style={{ display:"flex", flexDirection:"column", gap:"2rem" }} data-aos="fade-left" data-aos-duration="850" data-aos-delay="120">
                 {pricing.map((p, i) => (
-                  <div key={p.name} className={`card pricing-card fade-right delay-${i+2} animated`}>
+                  <div
+                    key={p.name}
+                    className={`card pricing-card fade-right delay-${i+2} animated`}
+                    data-aos="fade-left"
+                    data-aos-duration="800"
+                    data-aos-delay={120 + i * 80}
+                  >
                     <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:"1.6rem" }}>
                       <div>
                         <div className="pricing-name" style={{ marginBottom:"0.4rem" }}>{p.name}</div>
@@ -77,8 +91,8 @@ export function ServicesPage({ setPage }) {
                           {p.price === "Custom" ? <span style={{ fontFamily:"Syne", fontSize:"2.8rem", fontWeight:"800" }}>Custom</span> : <><span style={{ fontFamily:"Syne", fontSize:"3.2rem", fontWeight:"800" }}>${p.price}</span><span style={{ color:"var(--text-3)", fontSize:"1.3rem" }}> / {p.period}</span></>}
                         </div>
                       </div>
-                      <button className={`btn ${p.featured ? "btn-primary" : "btn-secondary"} btn-sm`} onClick={() => { setPage("contact"); window.scrollTo({top:0}); }}>
-                        {p.price === "Custom" ? "Get Quote" : "Get Started"}
+                      <button className={`btn ${p.featured ? "btn-primary" : "btn-secondary"} btn-sm`} onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>
+                        {p.price === "Custom" ? "Get My Quote" : "Secure My Slot"}
                       </button>
                     </div>
                     <div style={{ display:"flex", flexWrap:"wrap", gap:"0.8rem", marginTop:"1.6rem" }}>
@@ -94,11 +108,11 @@ export function ServicesPage({ setPage }) {
 
       <section>
         <div className="container">
-          <div className="cta-section fade-up animated" data-parallax="10">
+          <div className="cta-section fade-up animated" data-parallax="10" data-aos="zoom-in-up" data-aos-duration="900" data-aos-delay="90">
             <h2>Ready to start your project?</h2>
             <p>Let's talk about what you need. I'll have a quote in your inbox within 24 hours.</p>
             <div className="cta-actions">
-              <button className="btn btn-primary btn-lg" onClick={() => { setPage("contact"); window.scrollTo({top:0}); }}>Get a Free Quote →</button>
+              <button className="btn btn-primary btn-lg" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>Get My Free Estimate →</button>
             </div>
           </div>
         </div>

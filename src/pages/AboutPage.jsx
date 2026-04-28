@@ -1,4 +1,5 @@
 import { useAnimateOnScroll } from "../hooks";
+import { scrollToTop } from "../utils/scroll";
 import { PROFILE } from "../data/profile";
 
 export function AboutPage({ setPage }) {
@@ -12,7 +13,7 @@ export function AboutPage({ setPage }) {
   return (
     <>
       <div className="page-header" data-parallax="16">
-        <div className="container">
+        <div className="container" data-aos="fade-up" data-aos-duration="850">
           <div className="section-eyebrow animated" style={{ justifyContent:"center" }}>About</div>
           <h1 className="fade-up animated">Hi, I'm {PROFILE.name}</h1>
           <p className="fade-up delay-1 animated">{PROFILE.role} with {PROFILE.yearsExperience}+ years of professional experience building modern, responsive, high-performing websites.</p>
@@ -20,17 +21,20 @@ export function AboutPage({ setPage }) {
       </div>
       <section style={{ paddingTop:"0" }}>
         <div className="container">
-          <div className="split-2">
+          <div className="split-2" data-aos="fade-up" data-aos-duration="900" data-aos-delay="80">
             <div>
               <div
                 style={{ aspectRatio:"4/5", borderRadius:"var(--radius-lg)", overflow:"hidden", background:"var(--bg-3)", border:"1px solid var(--border)" }}
                 className="fade-left animated"
                 data-parallax="10"
+                data-aos="fade-right"
+                data-aos-duration="900"
+                data-aos-delay="120"
               >
                 <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=600&q=80" alt="Developer" style={{ width:"100%", height:"100%", objectFit:"cover" }}/>
               </div>
             </div>
-            <div>
+            <div data-aos="fade-left" data-aos-duration="900" data-aos-delay="140">
               <div className="section-eyebrow fade-right animated">The Story</div>
               <h2 className="section-title fade-right delay-1 animated">Code. Design. Launch.</h2>
               <div style={{ color:"var(--text-2)", fontSize:"1.6rem", lineHeight:"1.8" }} className="fade-right delay-2 animated">
@@ -43,7 +47,7 @@ export function AboutPage({ setPage }) {
                 <div><strong style={{ fontFamily:"Syne", fontSize:"3.2rem", fontWeight:"800", color:"var(--accent)" }}>300+</strong><br/><span style={{ color:"var(--text-2)", fontSize:"1.4rem" }}>Projects Completed</span></div>
                 <div><strong style={{ fontFamily:"Syne", fontSize:"3.2rem", fontWeight:"800", color:"var(--accent)" }}>48</strong><br/><span style={{ color:"var(--text-2)", fontSize:"1.4rem" }}>Free Templates</span></div>
               </div>
-              <button className="btn btn-primary fade-right delay-4 animated" onClick={() => { setPage("contact"); window.scrollTo({top:0}); }}>
+              <button className="btn btn-primary fade-right delay-4 animated" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>
                 Let's Work Together →
               </button>
             </div>
@@ -53,7 +57,7 @@ export function AboutPage({ setPage }) {
 
       <section style={{ background:"var(--bg-2)", borderTop:"1px solid var(--border)", borderBottom:"1px solid var(--border)" }}>
         <div className="container">
-          <div className="split-2 split-2--start">
+          <div className="split-2 split-2--start" data-aos="fade-up" data-aos-duration="900">
             <div>
               <div className="section-eyebrow fade-left animated">Skills</div>
               <h2 style={{ fontSize:"3.2rem", marginBottom:"3.2rem" }} className="fade-left delay-1 animated">Technical Expertise</h2>

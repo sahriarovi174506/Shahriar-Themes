@@ -1,32 +1,75 @@
-import { useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useAnimateOnScroll, useDownloadsApi } from "../hooks";
 import { Icon } from "../components/Icon";
 import { Slider } from "../components/Slider";
 import { TemplateCard } from "../components/TemplateCard";
 import { TEMPLATES } from "../data/templates";
+import { scrollToTop } from "../utils/scroll";
 
 export function TemplateDetailPage({ template, setPage, setSelected }) {
   useAnimateOnScroll();
   const [activeImg, setActiveImg] = useState(0);
   const { count, download, clicked } = useDownloadsApi(template.id, template.downloads, template.repoUrl);
-  const related = TEMPLATES.filter(t => t.id !== template.id && t.category === template.category).slice(0, 3);
+  const related = useMemo(
+    () => TEMPLATES.filter((t) => t.id !== template.id && t.category === template.category).slice(0, 3),
+    [template.id, template.category]
+  );
+
+  // SEO Management for Detail Page
+  useEffect(() => {
+    document.title = `${template.name} - Free ${template.category} Template | Shahriar Themes`;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute("content", `Download the ${template.name} ${template.category} template for free. ${template.desc} Built with ${template.tech.join(", ")}.`);
+    }
+
+    // Inject JSON-LD
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = "json-ld-template";
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": template.name,
+      "operatingSystem": "Web",
+      "applicationCategory": "DeveloperApplication",
+      "description": template.desc,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    });
+    document.head.appendChild(script);
+
+    return () => {
+      const oldScript = document.getElementById("json-ld-template");
+      if (oldScript) oldScript.remove();
+    };
+  }, [template]);
   return (
     <>
       <div style={{ paddingTop:"8rem" }}>
         <section className="detail-hero">
           <div className="container">
             <div style={{ marginBottom:"2rem" }}>
-              <button className="btn btn-ghost btn-sm" onClick={() => { setPage("templates"); window.scrollTo({top:0}); }}>← Back to Templates</button>
+              <button className="btn btn-ghost btn-sm" onClick={() => { setPage("templates"); scrollToTop({ immediate: true }); }}>← Back to Templates</button>
             </div>
             <div className="split-2 split-2--detail">
               <div>
                 <div className="detail-preview fade-up animated" data-parallax="12">
-                  <img src={template.images[activeImg] || template.images[0]} alt={template.name} />
+                  <img
+                    src={template.images[activeImg] || template.images[0]}
+                    alt={template.name}
+                    loading="eager"
+                    decoding="async"
+                    fetchPriority="high"
+                  />
                 </div>
                 <div className="detail-thumbnails fade-up delay-1 animated">
                   {template.images.map((img, i) => (
                     <div key={i} className={`thumb ${activeImg === i ? "active" : ""}`} onClick={() => setActiveImg(i)}>
-                      <img src={img} alt={`${template.name} preview ${i + 1}`} />
+                      <img src={img} alt={`${template.name} preview ${i + 1}`} loading="lazy" decoding="async" />
                     </div>
                   ))}
                 </div>
@@ -57,7 +100,7 @@ export function TemplateDetailPage({ template, setPage, setSelected }) {
                   </ul>
                   <hr style={{ border:"none", borderTop:"1px solid var(--border)", margin:"2.4rem 0" }}/>
                   <p style={{ fontSize:"1.3rem", color:"var(--text-3)", textAlign:"center" }}>
-                    Need customisation? <button style={{ background:"none", border:"none", color:"var(--accent)", fontSize:"1.3rem", cursor:"pointer", fontWeight:"600" }} onClick={() => { setPage("contact"); window.scrollTo({top:0}); }}>Contact me →</button>
+                    Need customisation? <button style={{ background:"none", border:"none", color:"var(--accent)", fontSize:"1.3rem", cursor:"pointer", fontWeight:"600" }} onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>Contact me →</button>
                   </p>
                 </div>
               </div>

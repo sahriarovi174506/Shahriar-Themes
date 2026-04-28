@@ -6,6 +6,9 @@ import { AnimCount } from "../components/AnimCount";
 import { TEMPLATES } from "../data/templates";
 import { TESTIMONIALS } from "../data/siteData";
 import { apiUrl } from "../config";
+import { PROFILE } from "../data/profile";
+import { Icon } from "../components/Icon";
+import { scrollToTop } from "../utils/scroll";
 
 export function HomePage({ setPage, setSelected }) {
   useAnimateOnScroll();
@@ -25,12 +28,12 @@ export function HomePage({ setPage, setSelected }) {
     { icon:"⊞", title:"PSD / Figma to HTML", desc:"Pixel-perfect conversion of any design file to clean code.", badge:"badge-accent" },
   ];
   const whys = [
-    { n:"01", title:"Clean, Commented Code", desc:"Every line is readable, maintainable, and production-ready." },
-    { n:"02", title:"Performance First", desc:"Optimised images, lazy loading, and 95+ Lighthouse scores." },
-    { n:"03", title:"Fully Responsive", desc:"Looks perfect on every device, from watch to 4K monitor." },
-    { n:"04", title:"Fast Turnaround", desc:"Landing pages in 5 days, full sites in 2–4 weeks. Always." },
-    { n:"05", title:"Post-Launch Support", desc:"30 days of free bug-fix support after every project delivery." },
-    { n:"06", title:"Free Templates Forever", desc:"All community templates stay free. No paywalls, ever." },
+    { n:"01", title:"No Template Spam", desc:"Custom-built frontend systems designed for your specific business goals." },
+    { n:"02", title:"Performance First", desc:"Lighthouse scores of 95+. Faster sites mean lower bounce rates and more sales." },
+    { n:"03", title:"SEO-Ready Structure", desc:"Semantic HTML and schema markup to help you rank higher on search engines." },
+    { n:"04", title:"Clean, Scalable Code", desc:"Production-ready React/Next.js code that your team can easily maintain." },
+    { n:"05", title:"Mobile-First UX", desc:"Perfectly responsive designs that convert visitors on any device." },
+    { n:"06", title:"Post-Launch Support", desc:"30 days of free technical support to ensure a smooth transition." },
   ];
   return (
     <>
@@ -39,46 +42,60 @@ export function HomePage({ setPage, setSelected }) {
         <div className="hero-bg" data-parallax="50"/>
         <div className="hero-grid-lines" data-parallax="-25"/>
         <div className="container">
-          <div className="hero-content" data-parallax="18">
-            <div className="hero-eyebrow fade-up animated"><span>✦</span> Free Templates & Custom Dev</div>
+          <div className="hero-content" data-parallax="18" data-aos="fade-up" data-aos-duration="900">
+            <div className="hero-eyebrow fade-up animated"><span>✦</span> Free Website Templates & Custom Development</div>
             <h1 className="hero-title fade-up delay-1 animated">
-              Build sites that<br/><span className="highlight">actually convert</span>
+              I build websites that<br/><span className="highlight" style={{ background: "var(--gradient-1)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>turn visitors into clients</span>
             </h1>
             <p className="hero-desc fade-up delay-2 animated">
-              Download free professional website templates or commission a custom site built to your exact brief. Clean code. No shortcuts.
+              Stop losing leads to a slow, generic website. I build high-performance frontend systems that load faster, rank better, and convert more.
             </p>
             <div className="hero-actions fade-up delay-3 animated">
-              <button className="btn btn-primary btn-lg" onClick={() => { setPage("templates"); window.scrollTo({top:0}); }}>
-                Browse Free Templates →
+              <button className="btn btn-primary btn-lg" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>
+                Get Free Project Estimate →
               </button>
-              <button className="btn btn-secondary btn-lg" onClick={() => { setPage("contact"); window.scrollTo({top:0}); }}>
-                Hire Me
+              <button className="btn btn-secondary btn-lg" onClick={() => { setPage("templates"); scrollToTop({ immediate: true }); }}>
+                Browse Templates
               </button>
             </div>
-            <div className="hero-stats fade-up delay-4 animated">
-              <div className="hero-stat"><strong><AnimCount target={stats.totalTemplates}/></strong><span>Free Templates</span></div>
-              <div className="hero-stat"><strong><AnimCount target={stats.totalDownloads} suffix=""/></strong><span>Downloads</span></div>
-              <div className="hero-stat"><strong><AnimCount target={stats.happyClients} suffix=""/></strong><span>Happy Clients</span></div>
-              <div className="hero-stat"><strong><AnimCount target={stats.avgRating} suffix=""/></strong><span>Avg. Rating</span></div>
+            <div className="hero-availability fade-up delay-4 animated" style={{ marginTop:"3.2rem", fontSize:"1.4rem", color:"var(--accent)", fontWeight:"600", display:"flex", alignItems:"center", gap:"0.8rem", justifyContent:"center" }}>
+              <span className="pulse" style={{ width:"8px", height:"8px", background:"var(--accent)", borderRadius:"50%", boxShadow:"0 0 10px var(--accent)" }}></span>
+              Currently accepting only {PROFILE.availability.slotsRemaining} new projects for {PROFILE.availability.currentMonth}
+            </div>
+            <div className="hero-stats fade-up delay-5 animated">
+              <div className="hero-stat"><strong><AnimCount target={PROFILE.stats.completedProjects}/>+</strong><span>Projects Completed</span></div>
+              <div className="hero-stat"><strong><AnimCount target={PROFILE.stats.repeatClients} suffix=""/></strong><span>Repeat Clients</span></div>
+              <div className="hero-stat"><strong><AnimCount target={stats.totalDownloads} suffix=""/></strong><span>Global Downloads</span></div>
+              <div className="hero-stat"><strong><AnimCount target={5} suffix=""/></strong><span>Avg. Rating</span></div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Platform Trust Badges */}
+      <div className="trust-badges-row noise" style={{ padding:"4rem 0", borderBottom:"1px solid var(--border)", background:"rgba(0,0,0,0.2)" }}>
+        <div className="container" style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:"4rem", opacity: 0.6 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}><Icon name="github" /> GitHub</div>
+          <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}>Fiverr <span style={{ fontSize:"1.2rem", background:"var(--accent)", color:"#000", padding:"0.2rem 0.6rem", borderRadius:"4px" }}>{PROFILE.stats.fiverrStatus}</span></div>
+          <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}>Upwork</div>
+          <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}>LinkedIn</div>
+        </div>
+      </div>
+
       {/* Featured Templates */}
       <section style={{ background:"var(--bg-2)", borderTop:"1px solid var(--border)", borderBottom:"1px solid var(--border)" }}>
         <div className="container">
-          <div className="section-head-row">
+          <div className="section-head-row" data-aos="fade-up" data-aos-duration="800" data-aos-delay="80">
             <div>
               <div className="section-eyebrow fade-left animated">Featured Templates</div>
               <h2 className="section-title fade-left delay-1 animated">Download & Deploy Today</h2>
               <p className="section-subtitle fade-left delay-2 animated">Handcrafted, free, production-ready templates for every type of website.</p>
             </div>
-            <button className="btn btn-secondary fade-right animated" onClick={() => { setPage("templates"); window.scrollTo({top:0}); }}>
+            <button className="btn btn-secondary fade-right animated" onClick={() => { setPage("templates"); scrollToTop({ immediate: true }); }}>
               View All →
             </button>
           </div>
-          <div className="fade-up delay-2 animated">
+          <div className="fade-up delay-2 animated" data-aos="fade-up" data-aos-duration="900" data-aos-delay="150">
             <Slider perView={3} gap={24}>
               {TEMPLATES.map(t => <TemplateCard key={t.id} t={t} setPage={setPage} setSelected={setSelected}/>)}
             </Slider>
@@ -90,7 +107,7 @@ export function HomePage({ setPage, setSelected }) {
       <section className="impact-section noise">
         <div className="impact-bg" data-parallax="35" />
         <div className="container">
-          <div className="impact-content" data-parallax="12">
+          <div className="impact-content" data-parallax="12" data-aos="zoom-in-up" data-aos-duration="950">
             <div className="section-eyebrow fade-up animated" style={{ justifyContent: "center", marginBottom: "2rem" }}>Trust & Community</div>
             <h2 className="section-title fade-up delay-1 animated" style={{ marginBottom: "1rem" }}>Building for the Web, Together</h2>
             <div className="impact-stat fade-up delay-2 animated">
@@ -109,18 +126,24 @@ export function HomePage({ setPage, setSelected }) {
       {/* Services */}
       <section>
         <div className="container">
-          <div style={{ textAlign:"center", marginBottom:"6rem" }}>
+          <div style={{ textAlign:"center", marginBottom:"6rem" }} data-aos="fade-up" data-aos-duration="800">
             <div className="section-eyebrow fade-up animated" style={{ justifyContent:"center" }}>Services</div>
-            <h2 className="section-title fade-up delay-1 animated">What I Build For You</h2>
+            <h2 className="section-title fade-up delay-1 animated">Solutions Designed For Your Growth</h2>
             <p className="section-subtitle fade-up delay-2 animated" style={{ margin:"0 auto" }}>From quick landing pages to complex business platforms — scoped, quoted, and delivered.</p>
           </div>
           <div className="grid-4">
             {services.map((s, i) => (
-              <div key={s.title} className={`card service-card fade-up delay-${i+1} animated`}>
+              <div
+                key={s.title}
+                className={`card service-card fade-up delay-${i+1} animated`}
+                data-aos="fade-up"
+                data-aos-duration="850"
+                data-aos-delay={120 + i * 90}
+              >
                 <div className="service-icon" style={{ fontSize:"2.4rem" }}>{s.icon}</div>
                 <h3>{s.title}</h3>
                 <p>{s.desc}</p>
-                <button className="btn btn-ghost btn-sm" style={{ marginTop:"2rem" }} onClick={() => { setPage("services"); window.scrollTo({top:0}); }}>Learn More →</button>
+                <button className="btn btn-ghost btn-sm" style={{ marginTop:"2rem" }} onClick={() => { setPage("services"); scrollToTop({ immediate: true }); }}>Learn More →</button>
               </div>
             ))}
           </div>
@@ -130,20 +153,26 @@ export function HomePage({ setPage, setSelected }) {
       {/* Why Choose Me */}
       <section style={{ background:"var(--bg-2)", borderTop:"1px solid var(--border)", borderBottom:"1px solid var(--border)" }}>
         <div className="container">
-          <div className="whyChooseMe_row">
+          <div className="whyChooseMe_row" data-aos="fade-up" data-aos-duration="900">
             <div>
               <div className="section-eyebrow fade-left animated">Why Choose Me</div>
               <h2 className="section-title fade-left delay-1 animated">Code you can actually trust</h2>
               <p style={{ color:"var(--text-2)", fontSize:"1.6rem", lineHeight:"1.7", marginBottom:"3.2rem" }} className="fade-left delay-2 animated">
                 I've worked under a Fiverr Top Rated Seller for 3 years and completed hundreds of projects. Every project gets the same obsessive attention to detail.
               </p>
-              <button className="btn btn-primary fade-left delay-3 animated" onClick={() => { setPage("about"); window.scrollTo({top:0}); }}>
-                About Me →
+              <button className="btn btn-primary fade-left delay-3 animated" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>
+                Get Your Free Estimate →
               </button>
             </div>
             <div>
               {whys.map((w, i) => (
-                <div key={w.n} className={`why-item fade-right delay-${i%3+1} animated`}>
+                <div
+                  key={w.n}
+                  className={`why-item fade-right delay-${i%3+1} animated`}
+                  data-aos="fade-left"
+                  data-aos-duration="780"
+                  data-aos-delay={100 + i * 60}
+                >
                   <div className="why-num">{w.n}</div>
                   <div className="why-content">
                     <h3>{w.title}</h3>
@@ -159,11 +188,11 @@ export function HomePage({ setPage, setSelected }) {
       {/* Testimonials */}
       <section>
         <div className="container">
-          <div style={{ textAlign:"center", marginBottom:"6rem" }}>
+          <div style={{ textAlign:"center", marginBottom:"6rem" }} data-aos="fade-up" data-aos-duration="850">
             <div className="section-eyebrow fade-up animated" style={{ justifyContent:"center" }}>Testimonials</div>
-            <h2 className="section-title fade-up delay-1 animated">Loved by developers & founders</h2>
+            <h2 className="section-title fade-up delay-1 animated">Results-driven feedback from clients</h2>
           </div>
-          <div className="fade-up delay-2 animated">
+          <div className="fade-up delay-2 animated" data-aos="fade-up" data-aos-duration="900" data-aos-delay="120">
             <Slider perView={2} gap={24} auto={true}>
               {TESTIMONIALS.map(t => (
                 <div key={t.id} className="card testimonial-card">
@@ -183,13 +212,13 @@ export function HomePage({ setPage, setSelected }) {
       {/* CTA */}
       <section style={{ paddingTop:"0" }}>
         <div className="container">
-          <div className="cta-section fade-up animated">
+          <div className="cta-section fade-up animated" data-aos="zoom-in-up" data-aos-duration="900" data-aos-delay="80">
             <div className="section-eyebrow animated" style={{ justifyContent:"center" }}>Ready to build?</div>
             <h2>Start with a free template<br/>or go fully custom</h2>
             <p>Either way, you'll walk away with a site that looks great, loads fast, and converts visitors into customers.</p>
             <div className="cta-actions">
-              <button className="btn btn-primary btn-lg" onClick={() => { setPage("templates"); window.scrollTo({top:0}); }}>Browse Free Templates</button>
-              <button className="btn btn-secondary btn-lg" onClick={() => { setPage("contact"); window.scrollTo({top:0}); }}>Get a Custom Quote</button>
+              <button className="btn btn-primary btn-lg" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>See Your Project Cost</button>
+              <button className="btn btn-secondary btn-lg" onClick={() => { setPage("templates"); scrollToTop({ immediate: true }); }}>Browse Free Templates</button>
             </div>
 
           </div>

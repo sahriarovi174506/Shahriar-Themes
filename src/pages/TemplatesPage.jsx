@@ -1,6 +1,7 @@
-﻿import { useEffect } from "react";
+import { useEffect } from "react";
 import { useAnimateOnScroll, useProductSearch } from "../hooks";
 import { TemplateCard } from "../components/TemplateCard";
+import { Icon } from "../components/Icon";
 
 export function TemplatesPage({ setPage, setSelected }) {
   useAnimateOnScroll();
@@ -13,7 +14,11 @@ export function TemplatesPage({ setPage, setSelected }) {
     results,
     loading,
     meta,
-  } = useProductSearch({ initialFilters: { category: "All" }, pageSize: 12 });
+  } = useProductSearch({ 
+    initialFilters: { category: "All" }, 
+    pageSize: 12,
+    useApi: false // Force local data to avoid proxying to old live server
+  });
 
   const activeCategory = filters?.category || "All";
   useEffect(() => {
@@ -25,7 +30,7 @@ export function TemplatesPage({ setPage, setSelected }) {
   return (
     <>
       <div className="page-header" data-parallax="16">
-        <div className="container">
+        <div className="container" data-aos="fade-up" data-aos-duration="850">
           <div className="section-eyebrow animated" style={{ justifyContent:"center" }}>Free Templates</div>
           <h1 className="fade-up animated">Browse All Templates</h1>
           <p className="fade-up delay-1 animated">Fully coded, free to download, ready to deploy. No sign-up required.</p>
@@ -33,7 +38,7 @@ export function TemplatesPage({ setPage, setSelected }) {
       </div>
       <section style={{ paddingTop:"0" }}>
         <div className="container">
-          <div className="search-row fade-up animated">
+          <div className="search-row fade-up animated" data-aos="fade-up" data-aos-duration="800" data-aos-delay="60">
             <div className="search-input-wrap">
               <input
                 className="search-input"
@@ -53,7 +58,7 @@ export function TemplatesPage({ setPage, setSelected }) {
               {loading ? "Searching..." : `${meta.total} result${meta.total === 1 ? "" : "s"}`}
             </div>
           </div>
-          <div className="filter-row fade-up animated">
+          <div className="filter-row fade-up animated" data-aos="fade-up" data-aos-duration="850" data-aos-delay="120">
             {cats.map((c) => (
               <button
                 key={c}
@@ -66,14 +71,22 @@ export function TemplatesPage({ setPage, setSelected }) {
           </div>
           <div className="grid-3">
             {results.map((t, i) => (
-              <div key={t.id} className={`fade-up delay-${(i % 3) + 1} animated`}>
+              <div
+                key={t.id}
+                className={`fade-up delay-${(i % 3) + 1} animated`}
+                data-aos="fade-up"
+                data-aos-duration="800"
+                data-aos-delay={90 + (i % 3) * 80}
+              >
                 <TemplateCard t={t} setPage={setPage} setSelected={setSelected} />
               </div>
             ))}
           </div>
           {results.length === 0 && (
             <div style={{ textAlign:"center", padding:"6rem 0", color:"var(--text-3)" }}>
-              <div style={{ fontSize:"4rem", marginBottom:"1.6rem" }}>ðŸ”</div>
+              <div style={{ fontSize:"4rem", marginBottom:"1.6rem", opacity: 0.6 }}>
+                <Icon name="search" />
+              </div>
               <p>No templates in this category yet. Check back soon!</p>
             </div>
           )}

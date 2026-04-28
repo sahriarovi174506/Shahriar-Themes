@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { scrollToTop } from "../utils/scroll";
 import { useAnimateOnScroll } from "../hooks";
 import { FAQS } from "../data/siteData";
 
@@ -29,7 +30,7 @@ export function FAQPage({ setPage }) {
           </div>
           <div style={{ textAlign:"center", marginTop:"6rem" }} className="fade-up animated" data-parallax="10">
             <p style={{ color:"var(--text-2)", marginBottom:"2rem", fontSize:"1.6rem" }}>Still have questions?</p>
-            <button className="btn btn-primary btn-lg" onClick={() => { setPage("contact"); window.scrollTo({top:0}); }}>Get in Touch →</button>
+            <button className="btn btn-primary btn-lg" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>Get in Touch →</button>
           </div>
         </div>
       </section>

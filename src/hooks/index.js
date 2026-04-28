@@ -10,8 +10,18 @@ import { searchProductsLocal, searchSiteLocal } from "../utils/search";
 export function useScrolled() {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", fn);
+    let ticking = false;
+    const update = () => {
+      setScrolled(window.scrollY > 40);
+      ticking = false;
+    };
+    const fn = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    fn();
+    window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
   }, []);
   return scrolled;
@@ -20,8 +30,18 @@ export function useScrolled() {
 export function useScrollTop() {
   const [show, setShow] = useState(false);
   useEffect(() => {
-    const fn = () => setShow(window.scrollY > 400);
-    window.addEventListener("scroll", fn);
+    let ticking = false;
+    const update = () => {
+      setShow(window.scrollY > 400);
+      ticking = false;
+    };
+    const fn = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    fn();
+    window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
   }, []);
   return show;
@@ -29,6 +49,13 @@ export function useScrollTop() {
 
 export function useAnimateOnScroll() {
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document
+        .querySelectorAll(".fade-up,.fade-down,.fade-left,.fade-right")
+        .forEach((el) => el.classList.add("animated"));
+      return;
+    }
     const els = document.querySelectorAll(".fade-up,.fade-down,.fade-left,.fade-right");
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("animated"); }),
@@ -36,36 +63,39 @@ export function useAnimateOnScroll() {
     );
     els.forEach(el => observer.observe(el));
     return () => observer.disconnect();
-  });
+  }, []);
 }
 
-export function useSmoothScroll(dep) {
+export function useSmoothScroll() {
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     gsap.registerPlugin(ScrollTrigger);
     const lenis = new Lenis({
       smoothWheel: true,
-      smoothTouch: false,
+      syncTouch: true,
       lerp: 0.08,
-      wheelMultiplier: 0.9,
+      wheelMultiplier: 1,
     });
 
     document.documentElement.classList.add("lenis");
+    window.lenis = lenis;
     lenis.on("scroll", ScrollTrigger.update);
 
-    const raf = (time) => {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
+    const tick = (time) => {
+      lenis.raf(time * 1000);
     };
-    requestAnimationFrame(raf);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
+    ScrollTrigger.refresh();
 
     return () => {
+      gsap.ticker.remove(tick);
       lenis.destroy();
+      delete window.lenis;
       document.documentElement.classList.remove("lenis");
     };
-  }, [dep]);
+  }, []);
 }
 
 export function useGsapSiteAnimations(dep) {
@@ -125,14 +155,33 @@ export function useGsapSiteAnimations(dep) {
 
 export function useSlider(total, auto = false, interval = 4000) {
   const [idx, setIdx] = useState(0);
-  const prev = useCallback(() => setIdx(i => (i - 1 + total) % total), [total]);
-  const next = useCallback(() => setIdx(i => (i + 1) % total), [total]);
-  const go = useCallback((i) => setIdx(i), []);
+  const prev = useCallback(() => {
+    if (total <= 1) return;
+    setIdx((i) => (i - 1 + total) % total);
+  }, [total]);
+  const next = useCallback(() => {
+    if (total <= 1) return;
+    setIdx((i) => (i + 1) % total);
+  }, [total]);
+  const go = useCallback((i) => {
+    if (total <= 1) {
+      setIdx(0);
+      return;
+    }
+    setIdx(i);
+  }, [total]);
   useEffect(() => {
-    if (!auto) return;
+    if (total <= 0) {
+      setIdx(0);
+      return;
+    }
+    setIdx((i) => Math.min(i, total - 1));
+  }, [total]);
+  useEffect(() => {
+    if (!auto || total <= 1) return;
     const t = setInterval(next, interval);
     return () => clearInterval(t);
-  }, [auto, interval, next]);
+  }, [auto, interval, next, total]);
   return { idx, prev, next, go };
 }
 
@@ -159,37 +208,71 @@ export function useDownloads(initial, repoUrl) {
 }
 
 // API-connected version — fetches live count and posts to backend on click
-export function useDownloadsApi(templateId, initialCount, repoUrl) {
+export function useDownloadsApi(templateId, initialCount, repoUrl, { fetchOnMount = true } = {}) {
   const [count, setCount] = useState(initialCount);
   const [clicked, setClicked] = useState(false);
   const [loadedFor, setLoadedFor] = useState(null);
   const loading = Boolean(templateId) && loadedFor !== templateId;
 
   useEffect(() => {
-    if (!templateId) return;
+    setCount(initialCount);
+    setClicked(false);
+  }, [templateId, initialCount]);
+
+  useEffect(() => {
+    if (!templateId || !fetchOnMount) {
+      if (templateId) setLoadedFor(templateId);
+      return;
+    }
 
     let active = true;
-    fetch(apiUrl(`/api/downloads/${templateId}`))
-      .then(r => r.ok ? r.json() : null)
-      .then(data => {
+    const cachedCount = downloadCountCache.get(templateId);
+    if (typeof cachedCount === "number") {
+      setCount(cachedCount);
+      setLoadedFor(templateId);
+      return () => {
+        active = false;
+      };
+    }
+
+    const existingPromise = downloadRequestCache.get(templateId);
+    const request = existingPromise || fetch(apiUrl(`/api/downloads/${templateId}`))
+      .then(r => (r.ok ? r.json() : null))
+      .catch(() => null);
+
+    if (!existingPromise) {
+      downloadRequestCache.set(templateId, request);
+    }
+
+    request
+      .then((data) => {
         if (!active) return;
-        if (data) setCount(data.count);
+        if (data && typeof data.count === "number") {
+          downloadCountCache.set(templateId, data.count);
+          setCount(data.count);
+        }
       })
-      .catch(() => { })
       .finally(() => {
         if (!active) return;
         setLoadedFor(templateId);
+        downloadRequestCache.delete(templateId);
       });
 
-    return () => { active = false; };
-  }, [templateId]);
+    return () => {
+      active = false;
+    };
+  }, [templateId, fetchOnMount]);
 
   const download = async () => {
     if (clicked) return;
     setClicked(true);
 
     // OPTIMISTIC UPDATE: Increment immediately on the screen
-    setCount(c => c + 1);
+    setCount((c) => {
+      const next = c + 1;
+      if (templateId) downloadCountCache.set(templateId, next);
+      return next;
+    });
 
     // Trigger GitHub zip download
     if (repoUrl) {
@@ -212,6 +295,7 @@ export function useDownloadsApi(templateId, initialCount, repoUrl) {
           // ONLY update if the server actually saved it (not a fallback)
           if (data && data.count !== undefined && !data.isFallback) {
             setCount(data.count);
+            downloadCountCache.set(templateId, data.count);
           }
         }
       } catch (err) {
@@ -222,6 +306,9 @@ export function useDownloadsApi(templateId, initialCount, repoUrl) {
 
   return { count, download, clicked, loading };
 }
+
+const downloadCountCache = new Map();
+const downloadRequestCache = new Map();
 
 function buildQueryString(params) {
   const search = new URLSearchParams();

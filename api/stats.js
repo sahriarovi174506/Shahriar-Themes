@@ -37,7 +37,7 @@ export default async function handler(req, res) {
         return res.status(200).json({
             totalTemplates: TEMPLATES.length,
             totalDownloads,
-            happyClients: 120,
+            happyClients: 150,
             avgRating: 5,
         });
     } catch (error) {
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
         return res.status(200).json({
             totalTemplates: TEMPLATES.length,
             totalDownloads,
-            happyClients: 120,
+            happyClients: 150,
             avgRating: 5,
             isFallback: true,
             warning: "Database connection error"

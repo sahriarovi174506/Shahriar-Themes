@@ -28,6 +28,13 @@ export default defineConfig(({ mode }) => {
       exclude: ['ioredis', 'nodemailer', '@vercel/kv']
     },
     build: {
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true
+        }
+      },
       rollupOptions: {
         // Ensure backend-only modules are treated as external and never bundled
         external: [
@@ -35,7 +42,13 @@ export default defineConfig(({ mode }) => {
           'nodemailer',
           '@vercel/kv',
           /^api\/.*/
-        ]
+        ],
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom'],
+            animations: ['gsap', 'aos', 'lenis']
+          }
+        }
       }
     }
   }

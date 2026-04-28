@@ -1,13 +1,13 @@
-﻿import { TEMPLATES } from "./templates-data.js";
+import { TEMPLATES } from "./templates-data.js";
 
 const PAGES = [
     {
         id: "home",
         type: "page",
         title: "Home",
-        excerpt: "Free premium website templates and custom web development.",
+        excerpt: "Premium free website templates and high-converting custom web development.",
         page: "home",
-        tags: ["templates", "custom development", "landing"],
+        tags: ["free websites", "templates", "custom development", "landing"],
     },
     {
         id: "templates",

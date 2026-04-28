@@ -60,7 +60,10 @@ export const Icon = ({ name }) => {
     nextjs: "\u25B2",
     react: "\u269B",
     node: "\uD83D\uDFE2",
+    search: "\uD83D\uDD0D",
+    fiverr: "Fi",
+    upwork: "Up",
   };
 
-  return <span style={{ fontSize: "inherit" }}>{icons[name] || "â€¢"}</span>;
+  return <span style={{ fontSize: "inherit" }}>{icons[name] || "•"}</span>;
 };
