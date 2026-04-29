@@ -63,9 +63,9 @@ export function HomePage({ setPage, setSelected }) {
               Currently accepting only {PROFILE.availability.slotsRemaining} new projects for {PROFILE.availability.currentMonth}
             </div>
             <div className="hero-stats fade-up delay-5 animated">
-              <div className="hero-stat"><strong><AnimCount target={PROFILE.stats.completedProjects}/>+</strong><span>Projects Completed</span></div>
-              <div className="hero-stat"><strong><AnimCount target={PROFILE.stats.repeatClients} suffix=""/></strong><span>Repeat Clients</span></div>
+              <div className="hero-stat"><strong><AnimCount target={PROFILE.yearsExperience}/>+</strong><span>Years Experience</span></div>
               <div className="hero-stat"><strong><AnimCount target={stats.totalDownloads} suffix=""/></strong><span>Global Downloads</span></div>
+              <div className="hero-stat"><strong><AnimCount target={stats.totalTemplates} suffix=""/></strong><span>Free Templates</span></div>
               <div className="hero-stat"><strong><AnimCount target={5} suffix=""/></strong><span>Avg. Rating</span></div>
             </div>
           </div>
@@ -76,9 +76,9 @@ export function HomePage({ setPage, setSelected }) {
       <div className="trust-badges-row noise" style={{ padding:"4rem 0", borderBottom:"1px solid var(--border)", background:"rgba(0,0,0,0.2)" }}>
         <div className="container" style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:"4rem", opacity: 0.6 }}>
           <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}><Icon name="github" /> GitHub</div>
-          <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}>Fiverr <span style={{ fontSize:"1.2rem", background:"var(--accent)", color:"#000", padding:"0.2rem 0.6rem", borderRadius:"4px" }}>{PROFILE.stats.fiverrStatus}</span></div>
-          <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}>Upwork</div>
-          <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}>LinkedIn</div>
+          <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}><Icon name="facebook" /> Facebook</div>
+          <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}><Icon name="whatsapp" /> WhatsApp</div>
+          <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}>{PROFILE.role}</div>
         </div>
       </div>
 

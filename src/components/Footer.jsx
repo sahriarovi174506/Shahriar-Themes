@@ -6,9 +6,8 @@ export function Footer({ setPage }) {
   const go = (p) => { setPage(p); scrollToTop({ immediate: true }); };
   const year = new Date().getFullYear();
   const socials = [
-    { label: "Fiverr", icon: "fiverr", href: PROFILE.fiverrUrl },
     { label: "GitHub", icon: "github", href: PROFILE.githubUrl },
-    { label: "Upwork", icon: "upwork", href: PROFILE.upworkUrl },
+    { label: "Facebook", icon: "facebook", href: PROFILE.facebookUrl },
     { label: "WhatsApp", icon: "whatsapp", href: PROFILE.whatsappUrl },
   ];
   return (
@@ -21,8 +20,8 @@ export function Footer({ setPage }) {
             </div>
             <p>Free premium website templates and custom web development by {PROFILE.name}.</p>
             <div style={{ display:"flex", alignItems:"center", gap:"1rem", marginTop:"1.2rem", fontSize:"1.2rem", color:"var(--accent)", fontWeight:"700" }}>
-               <span className="pulse" style={{ width:"6px", height:"6px", background:"var(--accent)", borderRadius:"50%" }}></span>
-               {PROFILE.stats.fiverrStatus}
+              <span className="pulse" style={{ width:"6px", height:"6px", background:"var(--accent)", borderRadius:"50%" }}></span>
+              Available: {PROFILE.availability.slotsRemaining} slots in {PROFILE.availability.currentMonth}
             </div>
             <div style={{ display:"flex", gap:"1rem", marginTop:"2rem" }}>
               {socials.map(s => (

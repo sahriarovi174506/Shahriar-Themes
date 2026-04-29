@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useAnimateOnScroll } from "../hooks";
 import { apiUrl } from "../config";
 import { PROFILE } from "../data/profile";
@@ -37,12 +37,10 @@ export function ContactPage() {
   };
 
   const contactInfo = [
-    { icon:"✉", title:"Direct Email", val: PROFILE.email, href: `mailto:${PROFILE.email}` },
-    { icon:"💬", title:"WhatsApp Chat", val: "Instant Response", href: PROFILE.whatsappUrl },
-    { icon:"✈", title:"Telegram", val: "@sahriar_ovi", href: PROFILE.telegramUrl },
-    { icon:"📅", title:"Book a Call", val: "Schedule Meeting", href: PROFILE.calendlyUrl },
-    { icon:"🚀", title:"Fiverr Profile", val: PROFILE.stats.fiverrStatus, href: PROFILE.fiverrUrl },
-    { icon:"💼", title:"Upwork Profile", val: "Verified Freelancer", href: PROFILE.upworkUrl },
+    { icon: <Icon name="mail" />, title: "Email", val: PROFILE.email, href: `mailto:${PROFILE.email}` },
+    { icon: <Icon name="whatsapp" />, title: "WhatsApp", val: PROFILE.whatsapp, href: PROFILE.whatsappUrl },
+    { icon: <Icon name="facebook" />, title: "Facebook", val: "Facebook Profile", href: PROFILE.facebookUrl },
+    { icon: <Icon name="github" />, title: "GitHub", val: "GitHub Profile", href: PROFILE.githubUrl },
   ];
   return (
     <>
@@ -89,10 +87,10 @@ export function ContactPage() {
             <div className="fade-right animated" data-parallax="10" data-aos="fade-left" data-aos-duration="900" data-aos-delay="140">
               {status === "error" && (
                 <div className="form-success" style={{ borderColor:"#ff5e78" }}>
-                  <div style={{ fontSize:"3rem", marginBottom:"1.6rem" }}>✕</div>
+                  <div style={{ fontSize:"3rem", marginBottom:"1.6rem" }}>âœ•</div>
                   <h3 style={{ fontSize:"2.4rem", marginBottom:"1rem" }}>Failed to Send</h3>
                   <p style={{ color: "var(--text-2)", fontSize: "1.5rem" }}>Something went wrong. Please try again or email us directly at {PROFILE.email}.</p>
-                  <button className="btn btn-primary" style={{ marginTop:"2.4rem" }} onClick={() => setStatus("idle")}>Try Again →</button>
+                  <button className="btn btn-primary" style={{ marginTop:"2.4rem" }} onClick={() => setStatus("idle")}>Try Again â†’</button>
                 </div>
               )}
               {status === "success" && (
@@ -124,10 +122,10 @@ export function ContactPage() {
                   </div>
                   <div className="form-group">
                     <label>Message *</label>
-                    <textarea required placeholder="Tell me about your project — the more detail, the better..." value={form.message} onChange={e => set("message", e.target.value)}/>
+                    <textarea required placeholder="Tell me about your project â€” the more detail, the better..." value={form.message} onChange={e => set("message", e.target.value)}/>
                   </div>
                   <button type="submit" className="btn btn-primary btn-lg" style={{ width:"100%", justifyContent:"center" }} disabled={status === "loading"}>
-                    {status === "loading" ? "Sending..." : "Send Message →"}
+                    {status === "loading" ? "Sending..." : "Send Message â†’"}
                   </button>
                 </form>
               )}
@@ -138,3 +136,4 @@ export function ContactPage() {
     </>
   );
 }
+
