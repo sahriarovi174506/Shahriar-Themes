@@ -4,7 +4,7 @@ import { scrollToTop } from "../utils/scroll";
 import { Icon } from "./Icon";
 
 function TemplateCardComponent({ t, setPage, setSelected }) {
-  const { count, download, clicked } = useDownloadsApi(t.id, t.downloads, t.repoUrl, { fetchOnMount: false });
+  const { count, download, clicked } = useDownloadsApi(t.id, 0, t.repoUrl, { fetchOnMount: true });
   const goDetail = useCallback(() => {
     setSelected(t);
     setPage("detail");

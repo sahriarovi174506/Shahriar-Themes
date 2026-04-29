@@ -6,6 +6,7 @@ export function Footer({ setPage }) {
   const go = (p) => { setPage(p); scrollToTop({ immediate: true }); };
   const year = new Date().getFullYear();
   const socials = [
+    { label: "Email", icon: "mail", href: `mailto:${PROFILE.email}` },
     { label: "GitHub", icon: "github", href: PROFILE.githubUrl },
     { label: "Facebook", icon: "facebook", href: PROFILE.facebookUrl },
     { label: "WhatsApp", icon: "whatsapp", href: PROFILE.whatsappUrl },
@@ -19,10 +20,6 @@ export function Footer({ setPage }) {
               <span style={{ color:"var(--accent)" }}>✦</span> Shahriar<span>Themes</span>
             </div>
             <p>Free premium website templates and custom web development by {PROFILE.name}.</p>
-            <div style={{ display:"flex", alignItems:"center", gap:"1rem", marginTop:"1.2rem", fontSize:"1.2rem", color:"var(--accent)", fontWeight:"700" }}>
-              <span className="pulse" style={{ width:"6px", height:"6px", background:"var(--accent)", borderRadius:"50%" }}></span>
-              Available: {PROFILE.availability.slotsRemaining} slots in {PROFILE.availability.currentMonth}
-            </div>
             <div style={{ display:"flex", gap:"1rem", marginTop:"2rem" }}>
               {socials.map(s => (
                 <a key={s.label} href={s.href} target={s.href.startsWith("http") ? "_blank" : undefined} rel={s.href.startsWith("http") ? "noreferrer" : undefined} aria-label={s.label} title={s.label} style={{ width:"3.6rem",height:"3.6rem",borderRadius:"50%",background:"var(--bg-3)",border:"1px solid var(--border)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"1.6rem",color:"var(--text-2)",cursor:"pointer" }}>

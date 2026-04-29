@@ -9,7 +9,7 @@ import { scrollToTop } from "../utils/scroll";
 export function TemplateDetailPage({ template, setPage, setSelected }) {
   useAnimateOnScroll();
   const [activeImg, setActiveImg] = useState(0);
-  const { count, download, clicked } = useDownloadsApi(template.id, template.downloads, template.repoUrl);
+  const { count, download, clicked } = useDownloadsApi(template.id, 0, template.repoUrl);
   const related = useMemo(
     () => TEMPLATES.filter((t) => t.id !== template.id && t.category === template.category).slice(0, 3),
     [template.id, template.category]

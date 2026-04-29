@@ -58,10 +58,6 @@ export function HomePage({ setPage, setSelected }) {
                 Browse Templates
               </button>
             </div>
-            <div className="hero-availability fade-up delay-4 animated" style={{ marginTop:"3.2rem", fontSize:"1.4rem", color:"var(--accent)", fontWeight:"600", display:"flex", alignItems:"center", gap:"0.8rem", justifyContent:"center" }}>
-              <span className="pulse" style={{ width:"8px", height:"8px", background:"var(--accent)", borderRadius:"50%", boxShadow:"0 0 10px var(--accent)" }}></span>
-              Currently accepting only {PROFILE.availability.slotsRemaining} new projects for {PROFILE.availability.currentMonth}
-            </div>
             <div className="hero-stats fade-up delay-5 animated">
               <div className="hero-stat"><strong><AnimCount target={PROFILE.yearsExperience}/>+</strong><span>Years Experience</span></div>
               <div className="hero-stat"><strong><AnimCount target={stats.totalDownloads} suffix=""/></strong><span>Global Downloads</span></div>
@@ -78,7 +74,6 @@ export function HomePage({ setPage, setSelected }) {
           <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}><Icon name="github" /> GitHub</div>
           <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}><Icon name="facebook" /> Facebook</div>
           <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}><Icon name="whatsapp" /> WhatsApp</div>
-          <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}>{PROFILE.role}</div>
         </div>
       </div>
 
@@ -212,7 +207,12 @@ export function HomePage({ setPage, setSelected }) {
       {/* CTA */}
       <section style={{ paddingTop:"0" }}>
         <div className="container">
-          <div className="cta-section fade-up animated" data-aos="zoom-in-up" data-aos-duration="900" data-aos-delay="80">
+          <div
+            className="cta-section fade-up animated"
+            data-aos="fade-up"
+            data-aos-duration="700"
+            data-aos-delay="0"
+          >
             <div className="section-eyebrow animated" style={{ justifyContent:"center" }}>Ready to build?</div>
             <h2>Start with a free template<br/>or go fully custom</h2>
             <p>Either way, you'll walk away with a site that looks great, loads fast, and converts visitors into customers.</p>

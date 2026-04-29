@@ -515,6 +515,25 @@ section {
   gap: 2.4rem;
   margin: 3.2rem 0;
   flex-wrap: wrap;
+  justify-content: center;
+}
+
+.about-story-wrap {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.about-story-content {
+  text-align: center;
+}
+
+.about-story-content .section-eyebrow {
+  justify-content: center;
+}
+
+.about-story-copy {
+  max-width: 82ch;
+  margin: 0 auto;
 }
 
 .whyChooseMe_row {
@@ -550,8 +569,14 @@ section {
 
   .about-stats-row {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
     gap: 1.6rem;
+  }
+
+  .about-story-wrap {
+    width: 100%;
   }
 }
 
@@ -1834,6 +1859,17 @@ section {
   max-width: 56rem;
   margin: 1.6rem auto 0;
   position: relative;
+}
+
+.about-hero {
+  padding-bottom: 10rem;
+}
+
+.about-story-section {
+  padding-top: 10rem;
+  background: linear-gradient(180deg, #060814 0%, #0a0616 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 /* ── Contact Info ── */

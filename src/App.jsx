@@ -29,6 +29,10 @@ export default function App() {
       easing: "ease-out-cubic",
       offset: 80,
     });
+
+    const onLoad = () => AOS.refreshHard();
+    window.addEventListener("load", onLoad);
+    return () => window.removeEventListener("load", onLoad);
   }, []);
 
   // SEO Management
