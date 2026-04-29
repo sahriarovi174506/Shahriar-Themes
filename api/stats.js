@@ -1,4 +1,4 @@
-import Redis from "ioredis";
+﻿import Redis from "ioredis";
 import { TEMPLATES } from "./templates-data.js";
 
 // Lazy-initialized Redis client
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
 
         let totalDownloads = 0;
         TEMPLATES.forEach((t, i) => {
-            totalDownloads += (counts && counts[i] !== null) ? Number(counts[i]) : t.downloads;
+            totalDownloads += (counts && counts[i] !== null) ? Number(counts[i]) : 0;
         });
 
         return res.status(200).json({
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
         });
     } catch (error) {
         console.error("Redis Stats error:", error);
-        const totalDownloads = TEMPLATES.reduce((sum, t) => sum + t.downloads, 0);
+        const totalDownloads = 0;
         return res.status(200).json({
             totalTemplates: TEMPLATES.length,
             totalDownloads,
@@ -53,3 +53,4 @@ export default async function handler(req, res) {
         });
     }
 }
+

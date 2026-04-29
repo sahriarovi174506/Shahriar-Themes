@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useAnimateOnScroll } from "../hooks";
 import { Slider } from "../components/Slider";
 import { TemplateCard } from "../components/TemplateCard";
@@ -7,14 +7,13 @@ import { TEMPLATES } from "../data/templates";
 import { TESTIMONIALS } from "../data/siteData";
 import { apiUrl } from "../config";
 import { PROFILE } from "../data/profile";
-import { Icon } from "../components/Icon";
 import { scrollToTop } from "../utils/scroll";
 
 export function HomePage({ setPage, setSelected }) {
   useAnimateOnScroll();
 
   // Live site stats from backend
-  const [stats, setStats] = useState({ totalTemplates: 48, totalDownloads: 7800, happyClients: 120, avgRating: 5 });
+  const [stats, setStats] = useState({ totalTemplates: 0, totalDownloads: 0, happyClients: 0, avgRating: 5 });
   useEffect(() => {
     fetch(apiUrl(`/api/stats`))
       .then(r => r.ok ? r.json() : null)
@@ -22,10 +21,10 @@ export function HomePage({ setPage, setSelected }) {
       .catch(() => {});
   }, []);
   const services = [
-    { icon:"⚡", title:"Landing Pages", desc:"High-converting pages built to turn visitors into customers.", badge:"badge-accent" },
-    { icon:"🎨", title:"Portfolio Sites", desc:"Showcase your work with a beautifully crafted personal site.", badge:"badge-purple" },
-    { icon:"💼", title:"Business Websites", desc:"Professional multi-page sites with CMS and contact systems.", badge:"badge-pink" },
-    { icon:"⊞", title:"PSD / Figma to HTML", desc:"Pixel-perfect conversion of any design file to clean code.", badge:"badge-accent" },
+    { icon:"\u26A1", title:"Landing Pages", desc:"High-converting pages built to turn visitors into customers.", badge:"badge-accent" },
+    { icon:"\u{1F3A8}", title:"Portfolio Sites", desc:"Showcase your work with a beautifully crafted personal site.", badge:"badge-purple" },
+    { icon:"\u{1F4BC}", title:"Business Websites", desc:"Professional multi-page sites with CMS and contact systems.", badge:"badge-pink" },
+    { icon:"\u229E", title:"PSD / Figma to HTML", desc:"Pixel-perfect conversion of any design file to clean code.", badge:"badge-accent" },
   ];
   const whys = [
     { n:"01", title:"No Template Spam", desc:"Custom-built frontend systems designed for your specific business goals." },
@@ -43,7 +42,7 @@ export function HomePage({ setPage, setSelected }) {
         <div className="hero-grid-lines" data-parallax="-25"/>
         <div className="container">
           <div className="hero-content" data-parallax="18" data-aos="fade-up" data-aos-duration="900">
-            <div className="hero-eyebrow fade-up animated"><span>✦</span> Free Website Templates & Custom Development</div>
+            <div className="hero-eyebrow fade-up animated"><span>{"\u2726"}</span> Free Website Templates & Custom Development</div>
             <h1 className="hero-title fade-up delay-1 animated">
               I build websites that<br/><span className="highlight" style={{ background: "var(--gradient-1)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>turn visitors into clients</span>
             </h1>
@@ -52,7 +51,7 @@ export function HomePage({ setPage, setSelected }) {
             </p>
             <div className="hero-actions fade-up delay-3 animated">
               <button className="btn btn-primary btn-lg" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>
-                Get Free Project Estimate →
+                Get Free Project Estimate {"\u2192"}
               </button>
               <button className="btn btn-secondary btn-lg" onClick={() => { setPage("templates"); scrollToTop({ immediate: true }); }}>
                 Browse Templates
@@ -68,15 +67,6 @@ export function HomePage({ setPage, setSelected }) {
         </div>
       </section>
 
-      {/* Platform Trust Badges */}
-      <div className="trust-badges-row noise" style={{ padding:"4rem 0", borderBottom:"1px solid var(--border)", background:"rgba(0,0,0,0.2)" }}>
-        <div className="container" style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:"4rem", opacity: 0.6 }}>
-          <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}><Icon name="github" /> GitHub</div>
-          <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}><Icon name="facebook" /> Facebook</div>
-          <div style={{ display:"flex", alignItems:"center", gap:"1rem", fontSize:"1.8rem", fontWeight:"700" }}><Icon name="whatsapp" /> WhatsApp</div>
-        </div>
-      </div>
-
       {/* Featured Templates */}
       <section style={{ background:"var(--bg-2)", borderTop:"1px solid var(--border)", borderBottom:"1px solid var(--border)" }}>
         <div className="container">
@@ -87,7 +77,7 @@ export function HomePage({ setPage, setSelected }) {
               <p className="section-subtitle fade-left delay-2 animated">Handcrafted, free, production-ready templates for every type of website.</p>
             </div>
             <button className="btn btn-secondary fade-right animated" onClick={() => { setPage("templates"); scrollToTop({ immediate: true }); }}>
-              View All →
+              View All {"\u2192"}
             </button>
           </div>
           <div className="fade-up delay-2 animated" data-aos="fade-up" data-aos-duration="900" data-aos-delay="150">
@@ -124,7 +114,7 @@ export function HomePage({ setPage, setSelected }) {
           <div style={{ textAlign:"center", marginBottom:"6rem" }} data-aos="fade-up" data-aos-duration="800">
             <div className="section-eyebrow fade-up animated" style={{ justifyContent:"center" }}>Services</div>
             <h2 className="section-title fade-up delay-1 animated">Solutions Designed For Your Growth</h2>
-            <p className="section-subtitle fade-up delay-2 animated" style={{ margin:"0 auto" }}>From quick landing pages to complex business platforms — scoped, quoted, and delivered.</p>
+            <p className="section-subtitle fade-up delay-2 animated" style={{ margin:"0 auto" }}>From quick landing pages to complex business platforms - scoped, quoted, and delivered.</p>
           </div>
           <div className="grid-4">
             {services.map((s, i) => (
@@ -138,7 +128,7 @@ export function HomePage({ setPage, setSelected }) {
                 <div className="service-icon" style={{ fontSize:"2.4rem" }}>{s.icon}</div>
                 <h3>{s.title}</h3>
                 <p>{s.desc}</p>
-                <button className="btn btn-ghost btn-sm" style={{ marginTop:"2rem" }} onClick={() => { setPage("services"); scrollToTop({ immediate: true }); }}>Learn More →</button>
+                <button className="btn btn-ghost btn-sm" style={{ marginTop:"2rem" }} onClick={() => { setPage("services"); scrollToTop({ immediate: true }); }}>Learn More {"\u2192"}</button>
               </div>
             ))}
           </div>
@@ -156,7 +146,7 @@ export function HomePage({ setPage, setSelected }) {
                 I've worked under a Fiverr Top Rated Seller for 3 years and completed hundreds of projects. Every project gets the same obsessive attention to detail.
               </p>
               <button className="btn btn-primary fade-left delay-3 animated" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>
-                Get Your Free Estimate →
+                Get Your Free Estimate {"\u2192"}
               </button>
             </div>
             <div>
@@ -191,7 +181,7 @@ export function HomePage({ setPage, setSelected }) {
             <Slider perView={2} gap={24} auto={true}>
               {TESTIMONIALS.map(t => (
                 <div key={t.id} className="card testimonial-card">
-                  <div className="testimonial-stars">{Array(t.rating).fill(0).map((_,i) => <span key={i} className="star">★</span>)}</div>
+                  <div className="testimonial-stars">{Array(t.rating).fill(0).map((_,i) => <span key={i} className="star">{"\u2605"}</span>)}</div>
                   <p className="testimonial-text">{t.text}</p>
                   <div className="testimonial-author">
                     <div className="testimonial-avatar">{t.initials}</div>
@@ -227,3 +217,4 @@ export function HomePage({ setPage, setSelected }) {
     </>
   );
 }
+

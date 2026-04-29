@@ -87,10 +87,10 @@ export function ContactPage() {
             <div className="fade-right animated" data-parallax="10" data-aos="fade-left" data-aos-duration="900" data-aos-delay="140">
               {status === "error" && (
                 <div className="form-success" style={{ borderColor:"#ff5e78" }}>
-                  <div style={{ fontSize:"3rem", marginBottom:"1.6rem" }}>âœ•</div>
+                  <div style={{ fontSize:"3rem", marginBottom:"1.6rem" }}>{"\u2715"}</div>
                   <h3 style={{ fontSize:"2.4rem", marginBottom:"1rem" }}>Failed to Send</h3>
                   <p style={{ color: "var(--text-2)", fontSize: "1.5rem" }}>Something went wrong. Please try again or email us directly at {PROFILE.email}.</p>
-                  <button className="btn btn-primary" style={{ marginTop:"2.4rem" }} onClick={() => setStatus("idle")}>Try Again â†’</button>
+                  <button className="btn btn-primary" style={{ marginTop:"2.4rem" }} onClick={() => setStatus("idle")}>Try Again {"\u2192"}</button>
                 </div>
               )}
               {status === "success" && (
@@ -122,10 +122,10 @@ export function ContactPage() {
                   </div>
                   <div className="form-group">
                     <label>Message *</label>
-                    <textarea required placeholder="Tell me about your project â€” the more detail, the better..." value={form.message} onChange={e => set("message", e.target.value)}/>
+                    <textarea required placeholder="Tell me about your project - the more detail, the better..." value={form.message} onChange={e => set("message", e.target.value)}/>
                   </div>
                   <button type="submit" className="btn btn-primary btn-lg" style={{ width:"100%", justifyContent:"center" }} disabled={status === "loading"}>
-                    {status === "loading" ? "Sending..." : "Send Message â†’"}
+                    {status === "loading" ? "Sending..." : `Send Message \u2192`}
                   </button>
                 </form>
               )}

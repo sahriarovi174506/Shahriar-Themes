@@ -5,7 +5,7 @@ import process from 'node:process'
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const apiTarget = env.VITE_API_URL || 'https://shahriar-themes-marketplace.vercel.app'
+  const apiTarget = env.VITE_API_URL || 'https://shahriarthemes-marketplace.vercel.app'
 
   return {
     plugins: [react()],

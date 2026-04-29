@@ -1,13 +1,14 @@
-import { useAnimateOnScroll } from "../hooks";
+﻿import { useAnimateOnScroll } from "../hooks";
 import { scrollToTop } from "../utils/scroll";
+import { Icon } from "../components/Icon";
 
 export function ServicesPage({ setPage }) {
   useAnimateOnScroll();
   const services = [
-    { icon:"⚡", title:"Landing Page Development", desc:"Conversion-focused pages built with a clear user journey. A/B test ready, analytics integrated, and fully responsive.", features:["Hero + CTA","Feature sections","Testimonials","Pricing tables","Lead capture forms","A/B test structure"] },
-    { icon:"🎨", title:"Portfolio Websites", desc:"Personal sites that make you stand out. Showcase projects, skills, and achievements in a memorable, branded experience.", features:["Project grid/gallery","Skills timeline","About & bio","Blog integration","Contact form","Animations"] },
-    { icon:"💼", title:"Business Websites", desc:"Full multi-page business sites with CMS, SEO structure, blog, and all the content your company needs to grow online.", features:["Up to 8 pages","CMS integration","Blog system","Contact + booking","SEO foundation","Google Analytics"] },
-    { icon:"⊞", title:"Figma / PSD to HTML", desc:"Pixel-perfect implementation of any design file. If you can design it, I can code it — clean, maintainable, and responsive.", features:["Pixel-perfect fidelity","Semantic HTML","Responsive breakpoints","Accessible markup","Animation layer","Developer handoff"] },
+    { icon:"zap", title:"Landing Page Development", desc:"Conversion-focused pages built with a clear user journey. A/B test ready, analytics integrated, and fully responsive.", features:["Hero + CTA","Feature sections","Testimonials","Pricing tables","Lead capture forms","A/B test structure"] },
+    { icon:"figma", title:"Portfolio Websites", desc:"Personal sites that make you stand out. Showcase projects, skills, and achievements in a memorable, branded experience.", features:["Project grid/gallery","Skills timeline","About & bio","Blog integration","Contact form","Animations"] },
+    { icon:"briefcase", title:"Business Websites", desc:"Full multi-page business sites with SEO structure, blog, and all the content your company needs to grow online.", features:["Up to 8 pages","Blog system","Contact + booking","SEO foundation","Google Analytics"] },
+    { icon:"layout", title:"Figma / PSD to HTML", desc:"Pixel-perfect implementation of any design file. If you can design it, I can code it - clean, maintainable, and responsive.", features:["Pixel-perfect fidelity","Semantic HTML","Responsive breakpoints","Accessible markup","Animation layer","Developer handoff"] },
   ];
   const process = [
     { n:"01", title:"Discovery Call", desc:"We discuss your goals, audience, and requirements. I'll ask all the right questions to understand what you need." },
@@ -17,8 +18,8 @@ export function ServicesPage({ setPage }) {
     { n:"05", title:"Launch & Handoff", desc:"I deploy to your host, run final QA, and hand over all source files along with a documentation guide." },
   ];
   const pricing = [
-    { name:"Landing Page", price:"150", period:"starts at", features:["Single conversion page","A/B test ready","Lead capture form","Mobile responsive","Basic SEO","7-day delivery"], featured:false },
-    { name:"Business Site", price:"300", period:"starts at", features:["Up to 8 pages","CMS integration","Blog system","Contact + booking","Advanced SEO","2–4 week delivery", "30-day support"], featured:true },
+    { name:"Landing Page", price:"50", period:"starts at", features:["Single conversion page","A/B test ready","Lead capture form","Mobile responsive","Basic SEO"], featured:false },
+    { name:"Business Site", price:"220", period:"starts at", features:["Up to 8 pages","Blog system","Contact + booking","Advanced SEO","30-day support"], featured:true },
     { name:"Custom Frontend", price:"Custom", period:"quoted", features:["Next.js / TypeScript","Complex animations","API integrations","E-commerce functionality","Performance audit","Priority support"], featured:false },
   ];
   return (
@@ -42,7 +43,7 @@ export function ServicesPage({ setPage }) {
                 data-aos-duration="850"
                 data-aos-delay={120 + i * 80}
               >
-                <div className="service-icon">{s.icon}</div>
+                <div className="service-icon"><Icon name={s.icon} /></div>
                 <h3 style={{ fontSize:"2.2rem", marginBottom:"1.2rem" }}>{s.title}</h3>
                 <p style={{ marginBottom:"2.4rem" }}>{s.desc}</p>
                 <ul className="feature-list">
@@ -96,7 +97,7 @@ export function ServicesPage({ setPage }) {
                       </button>
                     </div>
                     <div style={{ display:"flex", flexWrap:"wrap", gap:"0.8rem", marginTop:"1.6rem" }}>
-                      {p.features.map(f => <span key={f} style={{ fontSize:"1.2rem", color:"var(--text-2)", background:"var(--bg-3)", padding:"0.3rem 1rem", borderRadius:"999px", border:"1px solid var(--border)" }}>✓ {f}</span>)}
+                      {p.features.map(f => <span key={f} style={{ fontSize:"1.2rem", color:"var(--text-2)", background:"var(--bg-3)", padding:"0.3rem 1rem", borderRadius:"999px", border:"1px solid var(--border)" }}><Icon name="check" /> {f}</span>)}
                     </div>
                   </div>
                 ))}
@@ -112,7 +113,7 @@ export function ServicesPage({ setPage }) {
             <h2>Ready to start your project?</h2>
             <p>Let's talk about what you need. I'll have a quote in your inbox within 24 hours.</p>
             <div className="cta-actions">
-              <button className="btn btn-primary btn-lg" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>Get My Free Estimate →</button>
+              <button className="btn btn-primary btn-lg" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>Get My Free Estimate <Icon name="arrow" /></button>
             </div>
           </div>
         </div>
@@ -120,3 +121,5 @@ export function ServicesPage({ setPage }) {
     </>
   );
 }
+
+

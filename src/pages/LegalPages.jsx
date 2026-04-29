@@ -14,7 +14,7 @@ export function PrivacyPage() {
       <section style={{ paddingTop:"0" }}>
         <div className="container">
           <div className="legal-content fade-up animated">
-            <p>This Privacy Policy describes how Shahriar Themes ("we", "us", or "our") collects, uses, and shares information about you when you use our website shahriar-themes.com.</p>
+            <p>This Privacy Policy describes how Shahriar Themes ("we", "us", or "our") collects, uses, and shares information about you when you use our website shahriarthemes.com.</p>
             <h2>Information We Collect</h2>
             <p>We collect information you provide directly to us, such as when you fill out our contact form (name, email address, and message content). We also collect limited anonymous analytics data to understand how visitors use our site.</p>
             <ul>

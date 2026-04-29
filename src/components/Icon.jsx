@@ -1,4 +1,4 @@
-import Email from "../assets/img/email.svg";
+﻿import Email from "../assets/img/email.svg";
 import Fb from "../assets/img/facebook.svg";
 import Git from "../assets/img/github.svg";
 import Whatsapp from "../assets/img/whatsapp.svg";
@@ -65,5 +65,6 @@ export const Icon = ({ name }) => {
     upwork: "Up",
   };
 
-  return <span style={{ fontSize: "inherit" }}>{icons[name] || "•"}</span>;
+  return <span style={{ fontSize: "inherit" }}>{icons[name] || "*"}</span>;
 };
+
