@@ -48,6 +48,8 @@ export default async function handler(req, res) {
             });
         }
 
+        await client.setnx(key, 0);
+
         if (req.method === "POST") {
             let newCount = await client.incr(key);
             return res.status(200).json({ success: true, id: templateId, count: newCount });
@@ -55,7 +57,8 @@ export default async function handler(req, res) {
 
         if (req.method === "GET") {
             const stored = await client.get(key);
-            const count = stored !== null ? Number(stored) : 0;
+            const value = stored !== null ? Number(stored) : 0;
+            const count = Number.isFinite(value) ? value : 0;
             return res.status(200).json({ id: templateId, count });
         }
     } catch (error) {
@@ -70,4 +73,3 @@ export default async function handler(req, res) {
 
     return res.status(405).json({ error: "Method not allowed" });
 }
-

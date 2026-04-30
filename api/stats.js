@@ -26,12 +26,19 @@ export default async function handler(req, res) {
         }
 
         const keys = TEMPLATES.map(t => `downloads:${t.id}`);
+
+        // Ensure every template has a persisted default count in Redis.
+        const initPipeline = client.pipeline();
+        keys.forEach((key) => initPipeline.setnx(key, 0));
+        await initPipeline.exec();
+
         // ioredis mget returns array of strings or null
         const counts = await client.mget(...keys);
 
         let totalDownloads = 0;
         TEMPLATES.forEach((t, i) => {
-            totalDownloads += (counts && counts[i] !== null) ? Number(counts[i]) : 0;
+            const value = (counts && counts[i] !== null) ? Number(counts[i]) : 0;
+            totalDownloads += Number.isFinite(value) ? value : 0;
         });
 
         return res.status(200).json({
@@ -53,4 +60,3 @@ export default async function handler(req, res) {
         });
     }
 }
-
