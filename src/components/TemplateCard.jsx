@@ -6,7 +6,7 @@ import { Icon } from "./Icon";
 
 function TemplateCardComponent({ t, setSelected }) {
   const navigate = useNavigate();
-  const { count, download, clicked } = useDownloadsApi(t.id, 0, t.repoUrl, { fetchOnMount: true });
+  const { count, download, clicked } = useDownloadsApi(t.id, t.downloads || 0, t.repoUrl, { fetchOnMount: true });
   
   const goDetail = useCallback(() => {
     setSelected(t);

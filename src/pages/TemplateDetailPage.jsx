@@ -10,14 +10,15 @@ import { scrollToTop } from "../utils/scroll";
 export function TemplateDetailPage({ template: initialTemplate, setSelected }) {
   useAnimateOnScroll();
   const { id } = useParams();
+  const templateId = Number(id);
   const navigate = useNavigate();
   const [activeImg, setActiveImg] = useState(0);
 
   // If template is not passed via state (e.g. direct URL access), find it by ID
   const template = useMemo(() => {
-    if (initialTemplate && initialTemplate.id === id) return initialTemplate;
-    return TEMPLATES.find((t) => t.id === id);
-  }, [initialTemplate, id]);
+    if (initialTemplate && initialTemplate.id === templateId) return initialTemplate;
+    return TEMPLATES.find((t) => t.id === templateId);
+  }, [initialTemplate, templateId]);
 
   // If still no template found, we can handle it (redirect or show error)
   useEffect(() => {
@@ -28,7 +29,7 @@ export function TemplateDetailPage({ template: initialTemplate, setSelected }) {
     }
   }, [template, navigate, setSelected]);
 
-  const { count, download, clicked } = useDownloadsApi(template?.id, 0, template?.repoUrl);
+  const { count, download, clicked } = useDownloadsApi(template?.id, template?.downloads || 0, template?.repoUrl);
 
   const related = useMemo(
     () => template ? TEMPLATES.filter((t) => t.id !== template.id && t.category === template.category).slice(0, 3) : [],

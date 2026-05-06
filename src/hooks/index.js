@@ -208,11 +208,12 @@ export function useDownloads(initial, repoUrl) {
 }
 
 // API-connected version — fetches live count and posts to backend on click
-export function useDownloadsApi(templateId, initialCount, repoUrl, { fetchOnMount = true } = {}) {
+export function useDownloadsApi(templateIdRaw, initialCount, repoUrl, { fetchOnMount = true } = {}) {
+  const templateId = (templateIdRaw !== undefined && templateIdRaw !== null && !isNaN(Number(templateIdRaw))) ? Number(templateIdRaw) : null;
   const [count, setCount] = useState(initialCount);
   const [clicked, setClicked] = useState(false);
   const [loadedFor, setLoadedFor] = useState(null);
-  const loading = Boolean(templateId) && loadedFor !== templateId;
+  const loading = templateId !== null && loadedFor !== templateId;
 
   useEffect(() => {
     setCount(initialCount);
