@@ -216,32 +216,34 @@ export function useDownloadsApi(templateIdRaw, initialCount, repoUrl, { fetchOnM
   const loading = templateId !== null && loadedFor !== templateId;
 
   useEffect(() => {
-    setCount(initialCount);
+    if (templateId === null) return;
+    
+    // Check cache first to avoid flicker to initialCount (usually 0)
+    const cached = downloadCountCache.get(templateId);
+    if (typeof cached === "number") {
+      setCount(cached);
+    } else {
+      setCount(initialCount);
+    }
     setClicked(false);
   }, [templateId, initialCount]);
 
   useEffect(() => {
-    if (!templateId || !fetchOnMount) {
-      if (templateId) setLoadedFor(templateId);
+    if (templateId === null || !fetchOnMount) {
+      if (templateId !== null) setLoadedFor(templateId);
       return;
     }
 
     let active = true;
-    const cachedCount = downloadCountCache.get(templateId);
-    if (typeof cachedCount === "number") {
-      setCount(cachedCount);
-      setLoadedFor(templateId);
-      return () => {
-        active = false;
-      };
-    }
+    
+    // If we have it in cache, we still fetch to get the freshest data,
+    // but the reset useEffect above already handled the immediate display.
+    const request = downloadRequestCache.get(templateId) || 
+      fetch(apiUrl(`/api/downloads/${templateId}`))
+        .then(r => (r.ok ? r.json() : null))
+        .catch(() => null);
 
-    const existingPromise = downloadRequestCache.get(templateId);
-    const request = existingPromise || fetch(apiUrl(`/api/downloads/${templateId}`))
-      .then(r => (r.ok ? r.json() : null))
-      .catch(() => null);
-
-    if (!existingPromise) {
+    if (!downloadRequestCache.has(templateId)) {
       downloadRequestCache.set(templateId, request);
     }
 
