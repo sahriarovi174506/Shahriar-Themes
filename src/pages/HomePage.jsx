@@ -1,4 +1,5 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAnimateOnScroll } from "../hooks";
 import { Slider } from "../components/Slider";
 import { TemplateCard } from "../components/TemplateCard";
@@ -9,8 +10,9 @@ import { apiUrl } from "../config";
 import { PROFILE } from "../data/profile";
 import { scrollToTop } from "../utils/scroll";
 
-export function HomePage({ setPage, setSelected }) {
+export function HomePage({ setSelected }) {
   useAnimateOnScroll();
+  const navigate = useNavigate();
 
   // Live site stats from backend
   const [stats, setStats] = useState({ totalTemplates: 0, totalDownloads: 0, happyClients: 0, avgRating: 5 });
@@ -50,10 +52,10 @@ export function HomePage({ setPage, setSelected }) {
               Stop losing leads to a slow, generic website. I build high-performance frontend systems that load faster, rank better, and convert more.
             </p>
             <div className="hero-actions fade-up delay-3 animated">
-              <button className="btn btn-primary btn-lg" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>
+              <button className="btn btn-primary btn-lg" onClick={() => { navigate("/contact"); scrollToTop({ immediate: true }); }}>
                 Get Free Project Estimate {"\u2192"}
               </button>
-              <button className="btn btn-secondary btn-lg" onClick={() => { setPage("templates"); scrollToTop({ immediate: true }); }}>
+              <button className="btn btn-secondary btn-lg" onClick={() => { navigate("/templates"); scrollToTop({ immediate: true }); }}>
                 Browse Templates
               </button>
             </div>
@@ -76,13 +78,13 @@ export function HomePage({ setPage, setSelected }) {
               <h2 className="section-title fade-left delay-1 animated">Download & Deploy Today</h2>
               <p className="section-subtitle fade-left delay-2 animated">Handcrafted, free, production-ready templates for every type of website.</p>
             </div>
-            <button className="btn btn-secondary fade-right animated" onClick={() => { setPage("templates"); scrollToTop({ immediate: true }); }}>
+            <button className="btn btn-secondary fade-right animated" onClick={() => { navigate("/templates"); scrollToTop({ immediate: true }); }}>
               View All {"\u2192"}
             </button>
           </div>
           <div className="fade-up delay-2 animated" data-aos="fade-up" data-aos-duration="900" data-aos-delay="150">
             <Slider perView={3} gap={24}>
-              {TEMPLATES.map(t => <TemplateCard key={t.id} t={t} setPage={setPage} setSelected={setSelected}/>)}
+              {TEMPLATES.map(t => <TemplateCard key={t.id} t={t} setSelected={setSelected}/>)}
             </Slider>
           </div>
         </div>
@@ -128,7 +130,7 @@ export function HomePage({ setPage, setSelected }) {
                 <div className="service-icon" style={{ fontSize:"2.4rem" }}>{s.icon}</div>
                 <h3>{s.title}</h3>
                 <p>{s.desc}</p>
-                <button className="btn btn-ghost btn-sm" style={{ marginTop:"2rem" }} onClick={() => { setPage("services"); scrollToTop({ immediate: true }); }}>Learn More {"\u2192"}</button>
+                <button className="btn btn-ghost btn-sm" style={{ marginTop:"2rem" }} onClick={() => { navigate("/services"); scrollToTop({ immediate: true }); }}>Learn More {"\u2192"}</button>
               </div>
             ))}
           </div>
@@ -145,7 +147,7 @@ export function HomePage({ setPage, setSelected }) {
               <p style={{ color:"var(--text-2)", fontSize:"1.6rem", lineHeight:"1.7", marginBottom:"3.2rem" }} className="fade-left delay-2 animated">
                 I've worked under a Fiverr Top Rated Seller for 3 years and completed hundreds of projects. Every project gets the same obsessive attention to detail.
               </p>
-              <button className="btn btn-primary fade-left delay-3 animated" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>
+              <button className="btn btn-primary fade-left delay-3 animated" onClick={() => { navigate("/contact"); scrollToTop({ immediate: true }); }}>
                 Get Your Free Estimate {"\u2192"}
               </button>
             </div>
@@ -207,10 +209,9 @@ export function HomePage({ setPage, setSelected }) {
             <h2>Start with a free template<br/>or go fully custom</h2>
             <p>Either way, you'll walk away with a site that looks great, loads fast, and converts visitors into customers.</p>
             <div className="cta-actions">
-              <button className="btn btn-primary btn-lg" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>See Your Project Cost</button>
-              <button className="btn btn-secondary btn-lg" onClick={() => { setPage("templates"); scrollToTop({ immediate: true }); }}>Browse Free Templates</button>
+              <button className="btn btn-primary btn-lg" onClick={() => { navigate("/contact"); scrollToTop({ immediate: true }); }}>See Your Project Cost</button>
+              <button className="btn btn-secondary btn-lg" onClick={() => { navigate("/templates"); scrollToTop({ immediate: true }); }}>Browse Free Templates</button>
             </div>
-
           </div>
         </div>
       </section>

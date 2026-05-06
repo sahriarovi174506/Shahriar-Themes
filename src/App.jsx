@@ -1,4 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from "react";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import "./index.css";
 import { useScrollTop, useGsapSiteAnimations, useSmoothScroll } from "./hooks";
 import AOS from "aos";
@@ -16,9 +17,20 @@ const PrivacyPage = lazy(() => import("./pages/LegalPages").then((m) => ({ defau
 const TermsPage = lazy(() => import("./pages/LegalPages").then((m) => ({ default: m.TermsPage })));
 
 export default function App() {
-  const [page, setPage] = useState("home");
   const [selected, setSelected] = useState(null);
   const showTop = useScrollTop();
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Derive "page" from location for animations and SEO
+  const getPageKey = (pathname) => {
+    if (pathname === "/") return "home";
+    if (pathname.startsWith("/templates")) return pathname.includes("/templates/") ? "detail" : "templates";
+    return pathname.substring(1);
+  };
+  
+  const page = getPageKey(location.pathname);
+
   useSmoothScroll();
   useGsapSiteAnimations(page);
 
@@ -40,6 +52,7 @@ export default function App() {
     const titles = {
       home: "Free Website Templates & Custom Web Development | Shahriar Themes",
       templates: "Browse Free React & HTML Templates | Shahriar Themes",
+      detail: selected ? `${selected.name} | Shahriar Themes` : "Template Details | Shahriar Themes",
       services: "Professional Web Development Services & Pricing | Shahriar Themes",
       about: "About Shahriar Themes | High-Performance Web Development",
       contact: "Get a Free Project Estimate | Contact Shahriar Themes",
@@ -69,32 +82,30 @@ export default function App() {
       window.scrollTo({ top: 0 });
     }
     requestAnimationFrame(() => AOS.refreshHard());
-  }, [page]);
-
-  const renderPage = () => {
-    switch (page) {
-      case "home":      return <HomePage setPage={setPage} setSelected={setSelected}/>;
-      case "templates": return <TemplatesPage setPage={setPage} setSelected={setSelected}/>;
-      case "detail":    return selected ? <TemplateDetailPage template={selected} setPage={setPage} setSelected={setSelected}/> : <TemplatesPage setPage={setPage} setSelected={setSelected}/>;
-      case "services":  return <ServicesPage setPage={setPage}/>;
-      case "about":     return <AboutPage setPage={setPage}/>;
-      case "contact":   return <ContactPage/>;
-      case "faq":       return <FAQPage setPage={setPage}/>;
-      case "privacy":   return <PrivacyPage/>;
-      case "terms":     return <TermsPage/>;
-      default:          return <HomePage setPage={setPage} setSelected={setSelected}/>;
-    }
-  };
+  }, [page, selected]);
 
   return (
     <>
       <header>
-        <Navbar page={page} setPage={setPage}/>
+        <Navbar page={page} />
       </header>
       <main>
-        <Suspense fallback={null}>{renderPage()}</Suspense>
+        <Suspense fallback={null}>
+          <Routes>
+            <Route path="/" element={<HomePage setSelected={setSelected}/>} />
+            <Route path="/templates" element={<TemplatesPage setSelected={setSelected}/>} />
+            <Route path="/templates/:id" element={<TemplateDetailPage template={selected} setSelected={setSelected}/>} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="*" element={<HomePage setSelected={setSelected}/>} />
+          </Routes>
+        </Suspense>
       </main>
-      <Footer setPage={setPage}/>
+      <Footer />
       <button
         className={`scroll-top ${showTop ? "visible" : ""}`}
         onClick={() => {

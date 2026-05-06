@@ -1,8 +1,10 @@
-﻿import { useAnimateOnScroll } from "../hooks";
+import { useNavigate } from "react-router-dom";
+import { useAnimateOnScroll } from "../hooks";
 import { scrollToTop } from "../utils/scroll";
 import { Icon } from "../components/Icon";
 
-export function ServicesPage({ setPage }) {
+export function ServicesPage() {
+  const navigate = useNavigate();
   useAnimateOnScroll();
   const services = [
     { icon:"zap", title:"Landing Page Development", desc:"Conversion-focused pages built with a clear user journey. A/B test ready, analytics integrated, and fully responsive.", features:["Hero + CTA","Feature sections","Testimonials","Pricing tables","Lead capture forms","A/B test structure"] },
@@ -92,7 +94,7 @@ export function ServicesPage({ setPage }) {
                           {p.price === "Custom" ? <span style={{ fontFamily:"Syne", fontSize:"2.8rem", fontWeight:"800" }}>Custom</span> : <><span style={{ fontFamily:"Syne", fontSize:"3.2rem", fontWeight:"800" }}>${p.price}</span><span style={{ color:"var(--text-3)", fontSize:"1.3rem" }}> / {p.period}</span></>}
                         </div>
                       </div>
-                      <button className={`btn ${p.featured ? "btn-primary" : "btn-secondary"} btn-sm`} onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>
+                      <button className={`btn ${p.featured ? "btn-primary" : "btn-secondary"} btn-sm`} onClick={() => { navigate("/contact"); scrollToTop({ immediate: true }); }}>
                         {p.price === "Custom" ? "Get My Quote" : "Secure My Slot"}
                       </button>
                     </div>
@@ -113,7 +115,7 @@ export function ServicesPage({ setPage }) {
             <h2>Ready to start your project?</h2>
             <p>Let's talk about what you need. I'll have a quote in your inbox within 24 hours.</p>
             <div className="cta-actions">
-              <button className="btn btn-primary btn-lg" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>Get My Free Estimate <Icon name="arrow" /></button>
+              <button className="btn btn-primary btn-lg" onClick={() => { navigate("/contact"); scrollToTop({ immediate: true }); }}>Get My Free Estimate <Icon name="arrow" /></button>
             </div>
           </div>
         </div>
@@ -121,5 +123,3 @@ export function ServicesPage({ setPage }) {
     </>
   );
 }
-
-

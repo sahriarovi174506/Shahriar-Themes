@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAnimateOnScroll, useDownloadsApi } from "../hooks";
 import { Icon } from "../components/Icon";
 import { Slider } from "../components/Slider";
@@ -6,17 +7,37 @@ import { TemplateCard } from "../components/TemplateCard";
 import { TEMPLATES } from "../data/templates";
 import { scrollToTop } from "../utils/scroll";
 
-export function TemplateDetailPage({ template, setPage, setSelected }) {
+export function TemplateDetailPage({ template: initialTemplate, setSelected }) {
   useAnimateOnScroll();
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [activeImg, setActiveImg] = useState(0);
-  const { count, download, clicked } = useDownloadsApi(template.id, 0, template.repoUrl);
+
+  // If template is not passed via state (e.g. direct URL access), find it by ID
+  const template = useMemo(() => {
+    if (initialTemplate && initialTemplate.id === id) return initialTemplate;
+    return TEMPLATES.find((t) => t.id === id);
+  }, [initialTemplate, id]);
+
+  // If still no template found, we can handle it (redirect or show error)
+  useEffect(() => {
+    if (!template) {
+      navigate("/templates", { replace: true });
+    } else {
+      setSelected(template);
+    }
+  }, [template, navigate, setSelected]);
+
+  const { count, download, clicked } = useDownloadsApi(template?.id, 0, template?.repoUrl);
+
   const related = useMemo(
-    () => TEMPLATES.filter((t) => t.id !== template.id && t.category === template.category).slice(0, 3),
-    [template.id, template.category]
+    () => template ? TEMPLATES.filter((t) => t.id !== template.id && t.category === template.category).slice(0, 3) : [],
+    [template]
   );
 
   // SEO Management for Detail Page
   useEffect(() => {
+    if (!template) return;
     document.title = `${template.name} - Free ${template.category} Template | Shahriar Themes`;
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
@@ -47,13 +68,16 @@ export function TemplateDetailPage({ template, setPage, setSelected }) {
       if (oldScript) oldScript.remove();
     };
   }, [template]);
+
+  if (!template) return null;
+
   return (
     <>
       <div style={{ paddingTop:"8rem" }}>
         <section className="detail-hero">
           <div className="container">
             <div style={{ marginBottom:"2rem" }}>
-              <button className="btn btn-ghost btn-sm" onClick={() => { setPage("templates"); scrollToTop({ immediate: true }); }}>← Back to Templates</button>
+              <button className="btn btn-ghost btn-sm" onClick={() => { navigate("/templates"); scrollToTop({ immediate: true }); }}>← Back to Templates</button>
             </div>
             <div className="split-2 split-2--detail">
               <div>
@@ -85,7 +109,7 @@ export function TemplateDetailPage({ template, setPage, setSelected }) {
                   <button className={`btn btn-primary btn-lg`} style={{ width:"100%", marginBottom:"1.2rem", justifyContent:"center" }} onClick={download}>
                     <Icon name="download"/> {clicked ? "✓ Downloaded!" : "Free Download"}
                   </button>
-                  <a href={template.previewUrl} className="btn btn-secondary" style={{ width:"100%", justifyContent:"center" }}>
+                  <a href={template.previewUrl} className="btn btn-secondary" target="_blank" rel="noopener noreferrer" style={{ width:"100%", justifyContent:"center" }}>
                     <Icon name="eye"/> Live Preview ↗
                   </a>
                   <hr style={{ border:"none", borderTop:"1px solid var(--border)", margin:"2.4rem 0" }}/>
@@ -100,7 +124,7 @@ export function TemplateDetailPage({ template, setPage, setSelected }) {
                   </ul>
                   <hr style={{ border:"none", borderTop:"1px solid var(--border)", margin:"2.4rem 0" }}/>
                   <p style={{ fontSize:"1.3rem", color:"var(--text-3)", textAlign:"center" }}>
-                    Need customisation? <button style={{ background:"none", border:"none", color:"var(--accent)", fontSize:"1.3rem", cursor:"pointer", fontWeight:"600" }} onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>Contact me →</button>
+                    Need customisation? <button style={{ background:"none", border:"none", color:"var(--accent)", fontSize:"1.3rem", cursor:"pointer", fontWeight:"600" }} onClick={() => { navigate("/contact"); scrollToTop({ immediate: true }); }}>Contact me →</button>
                   </p>
                 </div>
               </div>
@@ -113,7 +137,7 @@ export function TemplateDetailPage({ template, setPage, setSelected }) {
             <div className="container">
               <h2 style={{ fontSize:"2.8rem", marginBottom:"3.6rem" }} className="fade-up animated">Related Templates</h2>
               <Slider perView={3} gap={24}>
-                {related.map(t => <TemplateCard key={t.id} t={t} setPage={setPage} setSelected={setSelected}/>)}
+                {related.map(t => <TemplateCard key={t.id} t={t} setSelected={setSelected}/>)}
               </Slider>
             </div>
           </section>

@@ -3,7 +3,7 @@ import { useAnimateOnScroll, useProductSearch } from "../hooks";
 import { TemplateCard } from "../components/TemplateCard";
 import { Icon } from "../components/Icon";
 
-export function TemplatesPage({ setPage, setSelected }) {
+export function TemplatesPage({ setSelected }) {
   useAnimateOnScroll();
   const cats = ["All", "Landing Page", "Portfolio", "Business", "Blog"];
   const {
@@ -78,7 +78,7 @@ export function TemplatesPage({ setPage, setSelected }) {
                 data-aos-duration="800"
                 data-aos-delay={90 + (i % 3) * 80}
               >
-                <TemplateCard t={t} setPage={setPage} setSelected={setSelected} />
+                <TemplateCard t={t} setSelected={setSelected} />
               </div>
             ))}
           </div>

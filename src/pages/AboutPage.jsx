@@ -1,8 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import { useAnimateOnScroll } from "../hooks";
 import { scrollToTop } from "../utils/scroll";
 import { PROFILE } from "../data/profile";
 
-export function AboutPage({ setPage }) {
+export function AboutPage() {
+  const navigate = useNavigate();
   useAnimateOnScroll();
   const skills = [
     { name:"HTML / CSS", level:96 },{ name:"JavaScript", level:92 },
@@ -34,7 +36,7 @@ export function AboutPage({ setPage }) {
                 <div><strong style={{ fontFamily:"Syne", fontSize:"3.2rem", fontWeight:"800", color:"var(--accent)" }}>{PROFILE.yearsExperience}+</strong><br/><span style={{ color:"var(--text-2)", fontSize:"1.4rem" }}>Years Experience</span></div>
                 <div><strong style={{ fontFamily:"Syne", fontSize:"3.2rem", fontWeight:"800", color:"var(--accent)" }}>300+</strong><br/><span style={{ color:"var(--text-2)", fontSize:"1.4rem" }}>Projects Completed</span></div>
               </div>
-              <button className="btn btn-primary fade-right delay-4 animated" onClick={() => { setPage("contact"); scrollToTop({ immediate: true }); }}>
+              <button className="btn btn-primary fade-right delay-4 animated" onClick={() => { navigate("/contact"); scrollToTop({ immediate: true }); }}>
                 Let's Work Together →
               </button>
             </div>

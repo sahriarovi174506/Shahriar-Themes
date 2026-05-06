@@ -1,15 +1,18 @@
 import { memo, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDownloadsApi } from "../hooks";
 import { scrollToTop } from "../utils/scroll";
 import { Icon } from "./Icon";
 
-function TemplateCardComponent({ t, setPage, setSelected }) {
+function TemplateCardComponent({ t, setSelected }) {
+  const navigate = useNavigate();
   const { count, download, clicked } = useDownloadsApi(t.id, 0, t.repoUrl, { fetchOnMount: true });
+  
   const goDetail = useCallback(() => {
     setSelected(t);
-    setPage("detail");
+    navigate(`/templates/${t.id}`);
     scrollToTop({ immediate: true });
-  }, [setPage, setSelected, t]);
+  }, [navigate, setSelected, t]);
 
   const openPreview = useCallback(() => {
     window.open(t.previewUrl, "_blank", "noopener,noreferrer");

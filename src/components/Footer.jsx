@@ -1,9 +1,15 @@
 import { PROFILE } from "../data/profile";
+import { useNavigate } from "react-router-dom";
 import { scrollToTop } from "../utils/scroll";
 import { Icon } from "./Icon";
 
-export function Footer({ setPage }) {
-  const go = (p) => { setPage(p); scrollToTop({ immediate: true }); };
+export function Footer() {
+  const navigate = useNavigate();
+  const go = (p) => { 
+    const path = p === "home" ? "/" : `/${p}`;
+    navigate(path); 
+    scrollToTop({ immediate: true }); 
+  };
   const year = new Date().getFullYear();
   const socials = [
     { label: "Email", icon: "mail", href: `mailto:${PROFILE.email}` },
